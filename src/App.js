@@ -37,7 +37,7 @@ function App() {
     
     
     const params = {
-      email: 'enrajesh67@gmail.com',
+      email: '',
       otp: inputOTP,
     };
    
@@ -77,7 +77,7 @@ function App() {
 
   React.useEffect(() => {
     configureBaseURL(BASE_URL);
-    doLogin();
+    //doLogin();
   }, [])
 
   
