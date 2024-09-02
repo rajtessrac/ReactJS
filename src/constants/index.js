@@ -39,6 +39,6 @@ export const PREFERENCE = {
   USER: 'user',
 };
 
-export const BASE_URL = '';
+export const BASE_URL = 'https://test.vidyaranyam.in';
 
 export const DEFAULT_DATE = '1111-11-11';
