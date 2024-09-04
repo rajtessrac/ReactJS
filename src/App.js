@@ -46,8 +46,10 @@ function App() {
       if (response?.success === true) {
         
        localStorage.setItem('token', response.authenticatedUser.access);
+       localStorage.setItem('isLoggedIn', true);
         const user  = response.authenticatedUser;
         getUserProfile(user.id);
+        
         
       } else {
        alert(response?.message || 'Please try again or contact IT team')

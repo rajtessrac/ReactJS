@@ -2,38 +2,29 @@
 import React, { useState } from 'react';
 import SideMenu from './SideMenu';
 import './Home.css';
+import Dashboard from '../dashboard/Dashboard';
+import ProfileDropdown from './ProfileDropdown';
 
 function Home() {
   const [selectedSection, setSelectedSection] = useState('inbox');
 
   const renderContent = () => {
     switch (selectedSection) {
-      case 'inbox':
-        return <div>Inbox Content</div>;
-      case 'starred':
+      case 'dashboard':
+        return <Dashboard />;
+      case 'members':
         return <div>Starred Content</div>;
-      case 'sent':
+      case 'donations':
         return <div>Sent Content</div>;
-      case 'drafts':
+      case 'sevas':
         return <div>Drafts Content</div>;
-      case 'trash':
+      case 'categories':
         return <div>Trash Content</div>;
-      case 'newChat':
+      case 'report':
         return <div>New Chat Content</div>;
-      case 'chatHistory':
+      case 'bulk-upload':
         return <div>Chat History Content</div>;
-      case 'allContacts':
-        return <div>All Contacts Content</div>;
-      case 'frequentContacts':
-        return <div>Frequent Contacts Content</div>;
-      case 'blockedContacts':
-        return <div>Blocked Contacts Content</div>;
-      case 'generalSettings':
-        return <div>General Settings Content</div>;
-      case 'privacySettings':
-        return <div>Privacy Settings Content</div>;
-      case 'notificationSettings':
-        return <div>Notification Settings Content</div>;
+   
       default:
         return <div>Inbox Content</div>;
     }
@@ -43,6 +34,10 @@ function Home() {
     <div className="App">
       <SideMenu onSectionSelect={setSelectedSection} />
       <div className="content">
+      <div class="full-width-div">
+      {/* <i className="fas fa-user right-button"></i> */}
+      <ProfileDropdown />
+    </div>
         {renderContent()}
       </div>
     </div>

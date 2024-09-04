@@ -5,39 +5,29 @@ import Home from './screens/home/Home';
 
 // Simulate user authentication
 const isAuthenticated = () => {
-    return !!localStorage.getItem('isLoggedIn');
+    // Retrieve token from localStorage or cookies
+    const token = localStorage.getItem('token');
+
+    // Check if token is null or expired (for simplicity, assume non-null means valid)
+    return token !== null;
 };
 
 const Main = () => {
-    const [auth, setAuth] = useState(isAuthenticated());
-
-    // Redirect to home if already logged in
-    useEffect(() => {
-        if (auth) {
-            window.location.href = '/home';
-        }
-    }, [auth]);
-
+ 
     return (
         <Router>
             <Routes>
-                <Route exact path="/">
-                    { auth ? <Navigate to="/home" /> : <Login setAuth={ setAuth } /> }
-                </Route>
-                <ProtectedRoute path="/home" component={ Home } auth={ auth } />
+                <Route
+                    path="/"
+                    element={ isAuthenticated() ? <Home /> : <Navigate to="/login" /> }
+                />
+                <Route path="/login" element={ <Login /> } />
+                <Route path="/home" element={ isAuthenticated() ? <Home /> : <Navigate to="/login" /> } />
+
             </Routes>
         </Router>
     );
 };
 
-// Protected Route component
-const ProtectedRoute = ({ component: Component, auth, ...rest }) => (
-    <Route
-        { ...rest }
-        render={ (props) =>
-            auth ? <Component { ...props } /> : <Navigate to="/" />
-        }
-    />
-);
 
 export default Main;

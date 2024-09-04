@@ -4,5 +4,34 @@
   
   .content {
     flex-grow: 1;
-    padding: 20px;
+    
+    background-color: #f8f9fa;
   }
+
+
+  .full-width-div {
+    width: 100%;
+    background-color: #fff; /* Light grey background */
+    padding: 10px 20px;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Ensures content is spaced out */
+    border-bottom: 1px solid #ddd;
+}
+
+/* Button floated to the right */
+.right-button {
+    background-color: #007bff; /* Blue background color */
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    float: right;
+    margin-left: auto;
+}
+
+.right-button:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+}

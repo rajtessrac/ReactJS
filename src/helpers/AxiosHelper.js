@@ -129,6 +129,7 @@ export const getApiError = async (error) => {
   if (error?.response?.status === 401) {
     const token = localStorage.getItem('token');
     if (token) {
+      localStorage.clear();
      // do logout
     }
   }
