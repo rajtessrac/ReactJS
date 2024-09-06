@@ -1,68 +1,59 @@
 import React from 'react';
 import { Doughnut } from 'react-chartjs-2';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
+import './DonutChart.css'; // External CSS for styling
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 const DonutChart = () => {
-  // Sample Data
   const data = {
-    labels: ['testseva80', 'sevaaug29'],
+    labels: ['sev909', 'seva12', 'Jain samvatsari'],
     datasets: [
       {
         label: 'Donation Distribution',
-        data: [100, 0], // Add your data here
-        backgroundColor: ['#FF5733', '#D3D3D3'], // Colors for each segment
-        hoverOffset: 4,
+        data: [95.9, 3.7, 0.4], // Updated data from screenshot
+        backgroundColor: ['#e74c3c', '#d7ccc8', '#4CAF50'], // Custom colors from the screenshot
+        hoverBackgroundColor: ['#e74c3c', '#d7ccc8', '#4CAF50'],
       },
     ],
   };
 
-  // Chart Options
   const options = {
-    cutout: '70%', // Creates the donut hole in the center
+    responsive: true,
     plugins: {
       legend: {
-        display: true,
-        position: 'right',
+        display: false, // Custom legend is used
       },
       tooltip: {
         callbacks: {
-          label: (tooltipItem) => `${tooltipItem.label}: ${tooltipItem.raw}%`,
+          label: function (tooltipItem) {
+            return `${tooltipItem.label}: ${tooltipItem.raw}%`; // Display percentages
+          },
         },
       },
     },
-    // Custom plugin for the percentage label in the center
-    plugins: [
-      {
-        id: 'center-text',
-        beforeDraw(chart) {
-          const { width, height, ctx } = chart;
-          ctx.restore();
-          const fontSize = (height / 114).toFixed(2);
-          ctx.font = `${fontSize}em sans-serif`;
-          ctx.textBaseline = 'middle';
-
-          const text = '100%', // Add your percentage calculation logic here
-            textX = Math.round((width - ctx.measureText(text).width) / 2),
-            textY = height / 2;
-
-          ctx.fillText(text, textX, textY);
-          ctx.save();
-        },
-      },
-    ],
+    cutout: '70%', // Adjust to make it a donut chart
   };
 
   return (
-    <div style={{width: '33.33%', padding: '20px', background: '#fff', borderRadius: '8px', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)'}}>
-      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-        <h4>DONATION DISTRIBUTION BY SEVAS</h4>
-        <span style={{ display: 'flex', alignItems: 'center', color: '#000' }}>
-          <i style={{ marginRight: '5px' }}>👁</i> View All
-        </span>
+    <div className="donation-distribution-container">
+      <h3 className="title">DONATION DISTRIBUTION BY SEVAS</h3>
+      <div className="view-all-container">
+        <span className="view-icon">&#128065;</span>
+        <span className="view-text">View All</span>
       </div>
-      <Doughnut data={data} options={options} />
+      <div className="donut-legend-container">
+        <div className="donut-chart">
+          <Doughnut data={data} options={options} />
+        </div>
+        <div className="donation-legend">
+          <ul>
+            <li><span className="color-box" style={{ backgroundColor: '#e74c3c' }}></span> sev909</li>
+            <li><span className="color-box" style={{ backgroundColor: '#d7ccc8' }}></span> seva12</li>
+            <li><span className="color-box" style={{ backgroundColor: '#4CAF50' }}></span> Jain samvatsari</li>
+          </ul>
+        </div>
+      </div>
     </div>
   );
 };

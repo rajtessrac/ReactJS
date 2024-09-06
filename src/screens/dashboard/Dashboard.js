@@ -164,7 +164,7 @@ const Dashboard = memo(() => {
       <DonutChart />
       <JeevanadiList />
       </div>
-      <div className="card-container1">
+      <div className="card-container2">
         <TopTenDonors />
         <UpcomingSevas />
         <BirthdayList />
