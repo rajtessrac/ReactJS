@@ -2,25 +2,24 @@ import React, { useState } from 'react';
 import './Login.css';
 import Logo from '../../assets/images/logo.png'
 import authServices from '../../services/authServices';
-import { configureBaseURL } from '../../helpers/AxiosHelper';
-import { BASE_URL } from '../../constants';
 import { useNavigate } from 'react-router-dom';
+import FullScreenLoader from '../../components/FullScreenLoader';
+import { useStoreActions } from 'easy-peasy';
 const Login = () => {
 
   const navigate = useNavigate();
+  const {setUser} = useStoreActions((action) => action.auth);
   const [isVerifyOTP, setVerifyOTP] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const inputsRef = React.useRef([]);
   const [email, setEmail] = useState('');
   const [otp, setOtp] = useState('');
-
-  React.useEffect(() => {
-    configureBaseURL(BASE_URL);
-  }, [])
 
   const doLogin = async () => {
     console.log('doLogin')
 
     try {
+      setIsLoading(true);
       const params = { email };
       const response = await authServices.doLogin(params);
 
@@ -32,24 +31,29 @@ const Login = () => {
     } catch (e) {
       console.log(e);
     }
+    finally{
+      setIsLoading(false);
+    }
   };
 
 
   const handleVerifyOTP = async () => {
+    setIsLoading(true);
     const params = {
       email,
       otp: otp.join(''),
     };
 
     try {
+      setIsLoading(true);
       const response = await authServices.verifyOTP(params);
 
       if (response?.success === true) {
         
 
         localStorage.setItem('token', response.authenticatedUser.access);
-        const user = response.authenticatedUser;
-        localStorage.setItem('user', user);
+        setUser(response.authenticatedUser);
+        setVerifyOTP(true)
         navigate('/home')
         
         // getUserProfile(user.id);
@@ -62,6 +66,9 @@ const Login = () => {
 
       alert('Please try again or contact IT team')
 
+    }
+    finally{
+      setIsLoading(false);
     }
   };
 
@@ -96,7 +103,7 @@ const Login = () => {
   return (
     <div className="container">
       <div className="left-section">
-        <p className='title'>Standing up for vedic culture <br />is everyone's responsibility</p>
+        <p className='app-sloganle'>Standing up for vedic culture <br />is everyone's responsibility</p>
       </div>
       <div className="right-section">
         {isVerifyOTP === false ? <div className="login-container">
@@ -138,13 +145,14 @@ const Login = () => {
             <button onClick={ doLogin } className="resend-button">Resent OTP</button>
           </div>
           <div className="terms">
-            <a href="/terms">Terms and Conditions</a> |{ ' ' }
-            <a href="/privacy">Privacy Policy</a>
+            <a href="/terms-conditions.html">Terms and Conditions</a> |{ ' ' }
+            <a href="/privacy.html">Privacy Policy</a>
           </div>
         </div> }
 
 
       </div>
+      {isLoading? <FullScreenLoader size={10} />:null}
     </div>
   );
 };

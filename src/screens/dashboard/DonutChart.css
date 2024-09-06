@@ -1,0 +1,29 @@
+.chart-container {
+    width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .chart-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .chart-header h4 {
+    margin: 0;
+  }
+  
+  .chart-header span {
+    display: flex;
+    align-items: center;
+    color: #000;
+    cursor: pointer;
+  }
+  
+  .chart-header i {
+    margin-right: 5px;
+  }

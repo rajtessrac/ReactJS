@@ -4,12 +4,14 @@ import '@fortawesome/fontawesome-free/css/all.min.css';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
 import Main from './Main';
-import Login from './screens/login/Login';
+import store from './reduxData/store';
+import { StoreProvider } from 'easy-peasy';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-
+<StoreProvider store={store}>
     <Main />
+</StoreProvider>
 
 );
 

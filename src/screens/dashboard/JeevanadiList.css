@@ -1,0 +1,77 @@
+.jeevanadi-container {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    width: 33.33%;
+    /* margin: 0 auto; */
+  }
+  
+  .jeevanadi-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+  }
+  
+  .jeevanadi-title {
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+  }
+  
+  .view-all {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+  }
+  
+  .view-icon {
+    font-size: 18px;
+    margin-right: 5px;
+  }
+  
+  .view-text {
+    font-size: 14px;
+    color: #007bff;
+  }
+  
+  .jeevanadi-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .jeevanadi-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #eaeaea;
+  }
+  
+  .jeevanadi-info {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .year {
+    font-size: 14px;
+    font-weight: bold;
+    color: #333;
+  }
+  
+  .email {
+    font-size: 12px;
+    color: #888;
+  }
+  
+  .joined {
+    font-size: 12px;
+    color: #007bff;
+  }
+  
+  .jeevanadi-item:last-child {
+    border-bottom: none;
+  }
+  

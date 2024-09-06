@@ -4,9 +4,18 @@ import SideMenu from './SideMenu';
 import './Home.css';
 import Dashboard from '../dashboard/Dashboard';
 import ProfileDropdown from './ProfileDropdown';
+import Footer from '../footer/Footer';
+import { useStoreState } from 'easy-peasy';
 
 function Home() {
-  const [selectedSection, setSelectedSection] = useState('inbox');
+  const [selectedSection, setSelectedSection] = useState('dashboard');
+
+  const {user} = useStoreState((state) => state.auth);
+
+  React.useEffect(() => {
+    console.log('user', user);
+  }, [])
+  
 
   const renderContent = () => {
     switch (selectedSection) {
@@ -26,7 +35,7 @@ function Home() {
         return <div>Chat History Content</div>;
    
       default:
-        return <div>Inbox Content</div>;
+        return <Dashboard />;
     }
   };
 
@@ -40,6 +49,7 @@ function Home() {
     </div>
         {renderContent()}
       </div>
+      <Footer />
     </div>
   );
 }

@@ -1,0 +1,75 @@
+.dashboard-container {
+    width: 96%;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+  
+  .card-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* Four equal-width columns */
+    gap: 20px;
+  }
+
+  .card-container1 {
+    display: flex;
+    justify-content: space-between; /* Ensures equal spacing between blocks */
+    align-items: stretch;
+    margin-top: 20px;
+    gap: 20px;
+  }
+  
+
+  .card {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    text-align: center;
+  }
+  
+  .card h4 {
+    font-size: 14px;
+    color: #333;
+    margin-bottom: 10px;
+  }
+  
+  .card p {
+    font-size: 24px;
+    font-weight: bold;
+    margin: 0;
+  }
+  
+  .tabs {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+  }
+  
+  .tabs button {
+    border: 1px solid #007bff;
+    padding: 10px 20px;
+    background-color: white;
+    color: #007bff;
+    cursor: pointer;
+    margin-left: 10px;
+    border-radius: 5px;
+  }
+  
+  .tabs button.active {
+    background-color: #007bff;
+    color: white;
+  }
+  
+  .tabs button:hover {
+    background-color: #0056b3;
+    color: white;
+  }
+
+
+
+  

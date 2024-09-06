@@ -1,0 +1,79 @@
+.sevas-container {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    width: 33.33%;
+    /* margin: 0 auto; */
+  }
+  
+  .sevas-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+  }
+  
+  .sevas-title {
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+  }
+  
+  .view-all {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+  }
+  
+  .view-icon {
+    font-size: 18px;
+    margin-right: 5px;
+  }
+  
+  .view-text {
+    font-size: 14px;
+    color: #007bff;
+  }
+  
+  .sevas-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .seva-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #eaeaea;
+  }
+  
+  .seva-info {
+    display: flex;
+    align-items: center;
+  }
+  
+  .seva-image {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+  }
+  
+  .seva-name {
+    font-size: 14px;
+    font-weight: bold;
+    color: #333;
+  }
+  
+  .seva-date {
+    font-size: 14px;
+    color: #007bff;
+    font-weight: bold;
+  }
+  
+  .seva-item:last-child {
+    border-bottom: none;
+  }

@@ -1,0 +1,43 @@
+.top-ten-donors-container {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    width: 33.33%;
+    /* margin: 0 auto; */
+  }
+  
+  .top-ten-donors-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+  }
+  
+  .title {
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+  }
+  
+  .view-all {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+  }
+  
+  .view-icon {
+    font-size: 18px;
+    margin-right: 5px;
+  }
+  
+  .view-text {
+    font-size: 14px;
+    color: #007bff;
+  }
+  
+  .top-ten-chart-container {
+    height: 250px;
+    width: 100%;
+  }
+  
