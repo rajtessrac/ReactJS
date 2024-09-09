@@ -1,0 +1,58 @@
+.sevas-list-container {
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .title {
+    font-size: 18px;
+    font-weight: bold;
+  }
+  
+  .action-buttons {
+    display: flex;
+    align-items: center;
+  }
+  
+  .search-input {
+    margin-right: 10px;
+  }
+  
+  .seva-details {
+    display: flex;
+    align-items: center;
+  }
+  
+  .seva-image {
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+    border-radius: 50%;
+  }
+  
+  .even-row {
+    background-color: #f9f9f9;
+  }
+  
+  .odd-row {
+    background-color: #e0e0e0;
+  }
+  
+  .MuiTableCell-root {
+    padding: 8px;
+  }
+  
+  .pagination-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+  }
+  

@@ -6,6 +6,10 @@ import Dashboard from '../dashboard/Dashboard';
 import ProfileDropdown from './ProfileDropdown';
 import Footer from '../footer/Footer';
 import { useStoreState } from 'easy-peasy';
+import JeevanadiMembersList from '../members/JeevanadiMembersList';
+import DonationsList from '../donations/DonationsList';
+import SevasList from '../sevas/SevaList';
+import CategoriesList from '../categories/CategoriesList';
 
 function Home() {
   const [selectedSection, setSelectedSection] = useState('dashboard');
@@ -22,17 +26,17 @@ function Home() {
       case 'dashboard':
         return <Dashboard />;
       case 'members':
-        return <div>Starred Content</div>;
+        return <JeevanadiMembersList />
       case 'donations':
-        return <div>Sent Content</div>;
+        return <DonationsList />
       case 'sevas':
-        return <div>Drafts Content</div>;
+        return <SevasList />;
       case 'categories':
-        return <div>Trash Content</div>;
+        return <CategoriesList />
       case 'report':
-        return <div>New Chat Content</div>;
+        return <div>Coming soon</div>;
       case 'bulk-upload':
-        return <div>Chat History Content</div>;
+        return <div>Coming soon</div>;
    
       default:
         return <Dashboard />;
