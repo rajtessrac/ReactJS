@@ -5,6 +5,7 @@ import Home from './screens/home/Home';
 import { useStoreRehydrated } from 'easy-peasy';
 import { configureBaseURL } from './helpers/AxiosHelper';
 import { BASE_URL } from './constants';
+import FullScreenLoader from './components/FullScreenLoader';
 
 // Simulate user authentication
 const isAuthenticated = () => {
@@ -16,15 +17,15 @@ const isAuthenticated = () => {
 };
 
 const Main = () => {
-    const isRehydrated = useStoreRehydrated();
+     const isRehydrated = useStoreRehydrated();
     React.useEffect(() => {
         configureBaseURL(BASE_URL);
       }, [])
     
     
     return (
-
-        <Router>
+        <>
+        {isRehydrated?    <Router>
             <Routes>
                 <Route
                     path="/"
@@ -34,7 +35,9 @@ const Main = () => {
                 <Route path="/home" element={ isAuthenticated()  ? <Home /> : <Navigate to="/login" /> } />
 
             </Routes>
-        </Router>
+        </Router>:<FullScreenLoader size={8} />}
+    
+        </>
     );
 };
 

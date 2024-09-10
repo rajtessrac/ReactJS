@@ -13,7 +13,7 @@ import JeevanadiList from './JeevanadiList';
 
 const Dashboard = memo(() => {
   const [activeTab, setActiveTab] = useState('Week');
-  // const {user} = useStoreState((state) => state.auth);
+  const {user} = useStoreState((state) => state.auth);
   const [totalDonationData, setTotalDonation] = useState();
   const [totalDonationByDateList, setTotalDonationByDate] = useState([]);
   const [totalDonationByEventsList, setTotalDonationByEvents] = useState([]);
@@ -25,12 +25,15 @@ const Dashboard = memo(() => {
   const [recurringDonationList, setRecurringDonationList] = useState([]);
   const [jeevanadiNumbers, setJeevanadiNumbers] = useState();
   const [recurringPercentage, setRecurringPercentage] = useState(0);
+  
 
   useDidMountEffect(() => {
     getDashboardDetails(activeTab);
+
   }, [selectedType]);
 
   React.useEffect(() => {
+    
     setTotalEventAmount(
       totalDonationByEventsList.reduce(
         (accumulator, current) => accumulator + current.amount * current.count,
@@ -48,11 +51,11 @@ const Dashboard = memo(() => {
       const totalDonation = await dashboardService.getTotalDonation(type);
       if (totalDonation) {
         setTotalDonation(totalDonation);
-        // if (user.role === 'Donor') {
-        //   setRecurringPercentage(totalDonation.donations_percent_change);
-        // } else {
-        //   setRecurringPercentage(totalDonation.donors_percent_change);
-        // }
+        if (user.role === 'Donor') {
+          setRecurringPercentage(totalDonation.donations_percent_change);
+        } else {
+          setRecurringPercentage(totalDonation.donors_percent_change);
+        }
       }
       const totalDonationByDate = await dashboardService.getDonationByDate(type);
       if (totalDonationByDate.data) {
@@ -95,25 +98,9 @@ const Dashboard = memo(() => {
 
   React.useEffect(() => {
     getDashboardDetails('week');
-    getAllUsers();
   }, []);
 
-  const getAllUsers = async () => {
-    try {
-      // startLoader();
-      const response = await usersServices.getUsersList();
-      // console.log('response of userlist: ');
 
-      // if (Array.isArray(response) && response.length > 0) {
-      //   setReferredByList(response);
-      // }
-    } catch (e) {
-      console.log(e);
-    }
-    // finally {
-    //   stopLoader();
-    // }
-  };
   
 
   return (
@@ -143,8 +130,12 @@ const Dashboard = memo(() => {
       </div>
       <div className="card-container">
         <div className="card">
-          <h4>TOTAL DONATIONS RECEIVED</h4>
-          <p>₹9,080.00</p>
+          <h4>{user.role === 'Donor' ? 'MY DONATIONS (INR)' : 'TOTAL DONATIONS RECEIVED'}</h4>
+          <p> {`${Intl.NumberFormat('en-US', {
+                  style: 'currency',
+                  currency: 'INR',
+                  minimumFractionDigits: 2,
+                }).format(totalDonationData?.total_donation)}`}</p>
         </div>
         <div className="card">
           <h4>TOTAL RECURRING DONORS</h4>
@@ -152,12 +143,14 @@ const Dashboard = memo(() => {
         </div>
         <div className="card">
           <h4>CURRENT RUNNING JEEVANADI NUMBER</h4>
-          <p>2013</p>
+          <p>{jeevanadiNumbers?.current_jno || ''}</p>
         </div>
+        {jeevanadiNumbers?.total_jmembers ?  
         <div className="card">
           <h4>NEW JEEVANADI MEMBERS</h4>
-          <p>1</p>
-        </div>
+          <p>{jeevanadiNumbers?.total_jmembers}</p>
+        </div>:null}
+      
       </div>
       <div className="card-container1">
       <DonationChart />

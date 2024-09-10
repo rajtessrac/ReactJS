@@ -1,6 +1,7 @@
-import {action} from 'easy-peasy';
+import { action, persist } from 'easy-peasy';
+import persistStorage from '../persistStorage';
 
-export default {
+export default persist({
   user: {},
   isLoggedIn: 'false',
   setIsLoggedIn: action((state, payload) => {
@@ -9,4 +10,6 @@ export default {
   setUser: action((state, payload) => {
     state.user = payload;
   }),
-};
+}, {
+  storage: persistStorage
+})

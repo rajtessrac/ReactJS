@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './ProfileDropdown.css';
 
-const ProfileDropdown = () => {
+const ProfileDropdown = ({onSectionSelect}) => {
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
 
@@ -13,6 +13,7 @@ const ProfileDropdown = () => {
   const handleProfileClick = () => {
     console.log('Profile clicked');
     // Add your logic for navigating to the profile page or performing an action
+    onSectionSelect('profile')
     setIsOpen(false);
   };
 
