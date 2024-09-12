@@ -1,26 +1,21 @@
 import React from 'react';
 import './BirthdayList.css'; // Include your CSS file here
 
-const birthdays = [
-  { name: 'Shalini', date: '07-08-2024', type: 'Bdy' },
-  { name: 'Shalini Baddigam', date: '03-08-2024', type: 'Bdy' },
-  { name: 'shalini1', date: '10-08-2024', type: 'Birthday' },
-  { name: 'Shalini testing', date: '09-08-2024', type: 'Bdy' },
-  { name: 'shalini22', date: '09-08-2024', type: 'Bdy' },
-];
+const BirthdayList = ({data}) => {
 
-const BirthdayList = () => {
+  const capitalize = (str) => (str ? str.charAt(0).toUpperCase() + str.slice(1).toLowerCase() : '');
+
   return (
     <div className="birthday-container">
       <h3 className="title">UPCOMING BIRTHDAYS / ANNIVERSARIES</h3>
       <ul className="birthday-list">
-        {birthdays.map((item, index) => (
+        {data.map((item, index) => (
           <li key={index} className="birthday-item">
             <div className="name-type">
-              <span className="name">{item.name}</span>
-              <span className="type">{item.type}</span>
+              <span className="name">{item.dfull_name}</span>
+              <span className="type">{`${item.occ_name}`}</span>
             </div>
-            <span className="date">{item.date}</span>
+            <span className="date">{item.occ_date}</span>
           </li>
         ))}
       </ul>

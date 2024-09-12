@@ -10,6 +10,7 @@ import BirthdayList from './BirthdayList';
 import TopTenDonors from './TopTenDonors';
 import UpcomingSevas from './UpcomingSevas';
 import JeevanadiList from './JeevanadiList';
+import { chartsColors } from '../../constants';
 
 const Dashboard = memo(() => {
   const [activeTab, setActiveTab] = useState('Week');
@@ -28,9 +29,9 @@ const Dashboard = memo(() => {
   
 
   useDidMountEffect(() => {
-    getDashboardDetails(activeTab);
+    getDashboardDetails(activeTab.toLowerCase());
 
-  }, [selectedType]);
+  }, [activeTab]);
 
   React.useEffect(() => {
     
@@ -63,6 +64,7 @@ const Dashboard = memo(() => {
       }
       const totalDonationByEvents = await dashboardService.getDonationByEvents(type);
       if (totalDonationByEvents.data) {
+        
         setTotalDonationByEvents(totalDonationByEvents.data);
       }
       const topTenDonors = await dashboardService.getTopTenDonors(type);
@@ -153,14 +155,19 @@ const Dashboard = memo(() => {
       
       </div>
       <div className="card-container1">
-      <DonationChart />
-      <DonutChart />
-      <JeevanadiList />
+        {totalDonationByDateList && totalDonationByDateList.length > 0 ? <DonationChart totalDonationByDateList={totalDonationByDateList} />:null}
+      
+      {totalDonationByEventsList && totalDonationByEventsList.length > 0 && totalEventAmount >0?
+       <DonutChart totalEventAmount={totalEventAmount} eventList={totalDonationByEventsList} />:null}
+     
+      {jeevanadiNumbers && jeevanadiNumbers?.jmembers? <JeevanadiList data= {jeevanadiNumbers.jmembers.slice(0, 5)} />:null}
+      
       </div>
       <div className="card-container2">
-        <TopTenDonors />
-        <UpcomingSevas />
-        <BirthdayList />
+        {topTenDonorsList && topTenDonorsList.length > 0?  <TopTenDonors topTenDonorsList={topTenDonorsList} /> :null}
+         {upcomingEventsList && upcomingEventsList.length > 0? <UpcomingSevas  data={upcomingEventsList.slice(0, 5)} /> : null}
+         {birthdayAndAnniversaryList && birthdayAndAnniversaryList.length > 0? <BirthdayList  data={birthdayAndAnniversaryList.slice(0, 5)} /> : null}
+        
 
       </div>
     

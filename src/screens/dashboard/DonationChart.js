@@ -2,24 +2,29 @@ import React from 'react';
 import { Line } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from 'chart.js';
 import './DonationChart.css';
+import moment from 'moment/moment';
 
 // Register the components with Chart.js
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
-const DonationChart = () => {
+const DonationChart = ({totalDonationByDateList}) => {
   // Data for the chart
   const data = {
-    labels: ['2024-08-29', '2024-08-30', '2024-08-31', '2024-09-01', '2024-09-02', '2024-09-03', '2024-09-04'],
+    labels: totalDonationByDateList.map(donation=>donation.day
+      ? moment(donation.day).format('DD[\n]MMM')
+      : donation?.payment_datetime__date
+      ? moment(donation.payment_datetime__date).format('DD[\n]MMM'):''),
     datasets: [
       {
         label: 'Donations',
-        data: [10000, 9080, 0, 0, 0, 0, 0], // Dummy donation data
+        data: totalDonationByDateList.map(donation=>donation.damount),
         borderColor: '#007bff',
         backgroundColor: 'rgba(0, 123, 255, 0.5)',
         fill: false,
       },
     ],
   };
+
 
   // Options for the chart
   const options = {

@@ -2,18 +2,23 @@ import React from 'react';
 import { Doughnut } from 'react-chartjs-2';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import './DonutChart.css'; // External CSS for styling
+import { chartsColors } from '../../constants';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-const DonutChart = () => {
+const DonutChart = ({eventList, totalEventAmount}) => {
   const data = {
-    labels: ['sev909', 'seva12', 'Jain samvatsari'],
+    labels: eventList.map(item=>item.title),
     datasets: [
       {
         label: 'Donation Distribution',
-        data: [95.9, 3.7, 0.4], // Updated data from screenshot
-        backgroundColor: ['#e74c3c', '#d7ccc8', '#4CAF50'], // Custom colors from the screenshot
-        hoverBackgroundColor: ['#e74c3c', '#d7ccc8', '#4CAF50'],
+        data: eventList.map(event=>`${
+          ((event.amount / totalEventAmount) * event.count * 100).toFixed(1) > 2
+            ? ((event.amount / totalEventAmount) * event.count * 100).toFixed(1)
+            : 0
+        }`), 
+        backgroundColor: chartsColors.slice(0,eventList.length-1),
+        hoverBackgroundColor: chartsColors.slice(0,eventList.length-1),
       },
     ],
   };
@@ -48,9 +53,12 @@ const DonutChart = () => {
         </div>
         <div className="donation-legend">
           <ul>
-            <li><span className="color-box" style={{ backgroundColor: '#e74c3c' }}></span> sev909</li>
-            <li><span className="color-box" style={{ backgroundColor: '#d7ccc8' }}></span> seva12</li>
-            <li><span className="color-box" style={{ backgroundColor: '#4CAF50' }}></span> Jain samvatsari</li>
+          {eventList.map((item, index) => (
+        <li style={{height: '5px'}} ><span className="color-box" style={{ backgroundColor:chartsColors[index] }}></span>{`${item.title} ${((item.amount / totalEventAmount) * item.count * 100).toFixed(1) > 2
+          ? ((item.amount / totalEventAmount) * item.count * 100).toFixed(1)
+          : 0}%`}</li>
+      ))}
+           
           </ul>
         </div>
       </div>

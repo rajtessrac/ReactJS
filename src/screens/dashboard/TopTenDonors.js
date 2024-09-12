@@ -6,19 +6,25 @@ import './TopTenDonors.css';
 // Register the components you need
 ChartJS.register(BarElement, CategoryScale, LinearScale, Legend, Title, Tooltip);
 
-const TopTenDonors = () => {
+const TopTenDonors = ({topTenDonorsList}) => {
   const data = {
-    labels: ['Shalini', 'Rajesh Nasit', 'Shubham Kumar Roy', 'Amit Patel Test1'],
+    labels: topTenDonorsList.map(donation=>donation.full_name ? `${donation.full_name}` : donation.email),
     datasets: [
       {
         label: 'Amount',
-        data: [5000, 500, 500, 200],
+        data: topTenDonorsList.map(donation=>donation.amount),
         backgroundColor: 'rgba(54, 162, 235, 0.8)', // Color of bars
         borderColor: 'rgba(54, 162, 235, 1)',
         borderWidth: 1,
       },
     ],
   };
+
+  // topTenDonorsList.map((donation) => ({
+  //   value: donation.amount,
+  //   label: donation.full_name ? `${donation.full_name}` : donation.email,
+  //   dataPointText: donation.day,
+  // }))
 
   const options = {
     scales: {

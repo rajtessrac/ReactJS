@@ -1,12 +1,15 @@
 import React from 'react';
 import './UpcomingSevas.css'; // External CSS file for styling
+import { BASE_URL } from '../../constants';
 
 const sevas = [
   { name: 'Jain Samvatsari', date: '07-09-2024', image: 'https://via.placeholder.com/50' },
   { name: 'Ganesh Chaturthi', date: '07-09-2024', image: 'https://via.placeholder.com/50' },
 ];
 
-const UpcomingSevas = () => {
+const capitalize = (str) => (str ? str.charAt(0).toUpperCase() + str.slice(1).toLowerCase() : '');
+
+const UpcomingSevas = ({data}) => {
   return (
     <div className="sevas-container">
       <div className="sevas-header">
@@ -20,10 +23,10 @@ const UpcomingSevas = () => {
         {sevas.map((seva, index) => (
           <li key={index} className="seva-item">
             <div className="seva-info">
-              <img src={seva.image} alt={seva.name} className="seva-image" />
-              <span className="seva-name">{seva.name}</span>
+              <img src={`${BASE_URL}/${seva.img}`} alt={seva.name} className="seva-image" />
+              <span className="seva-name">{capitalize(seva.title)}</span>
             </div>
-            <span className="seva-date">{seva.date}</span>
+            <span className="seva-date">{seva.start_date}</span>
           </li>
         ))}
       </ul>
