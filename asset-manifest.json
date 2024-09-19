@@ -1,26 +1,26 @@
 {
   "files": {
-    "main.css": "/ReactJS.git/static/css/main.db602e0f.css",
-    "main.js": "/ReactJS.git/static/js/main.accd63a7.js",
-    "static/js/453.68693753.chunk.js": "/ReactJS.git/static/js/453.68693753.chunk.js",
-    "static/media/login-banner1.jpeg": "/ReactJS.git/static/media/login-banner1.1589d56b3a0aaf62709a.jpeg",
-    "static/media/login-banner2.jpeg": "/ReactJS.git/static/media/login-banner2.896ba9d31223bd682873.jpeg",
-    "static/media/fa-solid-900.ttf": "/ReactJS.git/static/media/fa-solid-900.07ed6d5fa32c1d54af0f.ttf",
-    "static/media/fa-brands-400.ttf": "/ReactJS.git/static/media/fa-brands-400.0ff70dcbf135d859ebf3.ttf",
-    "static/media/fa-solid-900.woff2": "/ReactJS.git/static/media/fa-solid-900.93f719f4d62bfa3e748c.woff2",
-    "static/media/fa-brands-400.woff2": "/ReactJS.git/static/media/fa-brands-400.bb8d5a145e22822103fb.woff2",
-    "static/media/logo.png": "/ReactJS.git/static/media/logo.5e339c92ce43578c3e11.png",
-    "static/media/fa-regular-400.ttf": "/ReactJS.git/static/media/fa-regular-400.17a6e1aebccdbaa39e78.ttf",
-    "static/media/fa-regular-400.woff2": "/ReactJS.git/static/media/fa-regular-400.bc3722686635b5f86132.woff2",
-    "static/media/fa-v4compatibility.ttf": "/ReactJS.git/static/media/fa-v4compatibility.0f6cb412603527bda691.ttf",
-    "static/media/fa-v4compatibility.woff2": "/ReactJS.git/static/media/fa-v4compatibility.6cfec8414be20e2c3426.woff2",
-    "index.html": "/ReactJS.git/index.html",
-    "main.db602e0f.css.map": "/ReactJS.git/static/css/main.db602e0f.css.map",
-    "main.accd63a7.js.map": "/ReactJS.git/static/js/main.accd63a7.js.map",
-    "453.68693753.chunk.js.map": "/ReactJS.git/static/js/453.68693753.chunk.js.map"
+    "main.css": "/index.html/static/css/main.b37b55b8.css",
+    "main.js": "/index.html/static/js/main.b545311d.js",
+    "static/js/453.68693753.chunk.js": "/index.html/static/js/453.68693753.chunk.js",
+    "static/media/login-banner1.jpeg": "/index.html/static/media/login-banner1.1589d56b3a0aaf62709a.jpeg",
+    "static/media/login-banner2.jpeg": "/index.html/static/media/login-banner2.896ba9d31223bd682873.jpeg",
+    "static/media/fa-solid-900.ttf": "/index.html/static/media/fa-solid-900.07ed6d5fa32c1d54af0f.ttf",
+    "static/media/fa-brands-400.ttf": "/index.html/static/media/fa-brands-400.0ff70dcbf135d859ebf3.ttf",
+    "static/media/fa-solid-900.woff2": "/index.html/static/media/fa-solid-900.93f719f4d62bfa3e748c.woff2",
+    "static/media/fa-brands-400.woff2": "/index.html/static/media/fa-brands-400.bb8d5a145e22822103fb.woff2",
+    "static/media/logo.png": "/index.html/static/media/logo.5e339c92ce43578c3e11.png",
+    "static/media/fa-regular-400.ttf": "/index.html/static/media/fa-regular-400.17a6e1aebccdbaa39e78.ttf",
+    "static/media/fa-regular-400.woff2": "/index.html/static/media/fa-regular-400.bc3722686635b5f86132.woff2",
+    "static/media/fa-v4compatibility.ttf": "/index.html/static/media/fa-v4compatibility.0f6cb412603527bda691.ttf",
+    "static/media/fa-v4compatibility.woff2": "/index.html/static/media/fa-v4compatibility.6cfec8414be20e2c3426.woff2",
+    "index.html": "/index.html/index.html",
+    "main.b37b55b8.css.map": "/index.html/static/css/main.b37b55b8.css.map",
+    "main.b545311d.js.map": "/index.html/static/js/main.b545311d.js.map",
+    "453.68693753.chunk.js.map": "/index.html/static/js/453.68693753.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.db602e0f.css",
-    "static/js/main.accd63a7.js"
+    "static/css/main.b37b55b8.css",
+    "static/js/main.b545311d.js"
   ]
 }
