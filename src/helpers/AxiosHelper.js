@@ -132,6 +132,7 @@ export const getApiError = async (error) => {
       localStorage.clear();
      // do logout
     }
+    window.location.href = "/login";
   }
   return {
     message: Array.isArray(error?.response?.data?.message)

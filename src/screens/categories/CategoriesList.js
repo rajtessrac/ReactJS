@@ -7,9 +7,7 @@ import { Edit as EditIcon, Delete as DeleteIcon } from '@mui/icons-material';
 import './CategoriesList.css'; // Import CSS for styling
 import eventsService from '../../services/eventsService';
 
-
-
-const CategoriesList = () => {
+const CategoriesList = ({changeView}) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [categories, setCategories] = useState([]);
 
@@ -67,7 +65,9 @@ const CategoriesList = () => {
             onChange={handleSearch}
             className="search-input"
           />
-          <Button variant="contained" color="primary">Add Category</Button>
+          <Button onClick={()=>{
+            changeView('add-category')
+          }} variant="contained" color="primary">Add Category</Button>
         </div>
       </div>
 
@@ -88,7 +88,9 @@ const CategoriesList = () => {
               <TableRow key={category.id} className={index % 2 === 0 ? 'even-row' : 'odd-row'}>
                 <TableCell>{index + 1}</TableCell>
                 <TableCell>
-                  <div className="category-details">
+                  <div onClick={()=>{
+                    changeView('category-detail')
+                  }} className="category-details">
                     {category.cat_image ? (
                       <img src={category.cat_image} alt={category.name} className="category-image" />
                     ) : (
@@ -131,4 +133,4 @@ const CategoriesList = () => {
   );
 };
 
-export default CategoriesList;
+export default React.memo(CategoriesList);

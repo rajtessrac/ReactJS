@@ -9,7 +9,7 @@ import eventsService from '../../services/eventsService';
 
 // Original object format
 
-const SevasList = () => {
+const SevasList = ({changeView}) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [sevas, setSevas] = useState([]);
 
@@ -66,7 +66,9 @@ const SevasList = () => {
             onChange={handleSearch}
             className="search-input"
           />
-          <Button variant="contained" color="primary">Add Sevas</Button>
+          <Button variant="contained" onClick={()=>{
+            changeView('add-seva')
+          }} color="primary">Add Sevas</Button>
         </div>
       </div>
 
@@ -89,7 +91,7 @@ const SevasList = () => {
               <TableRow key={seva.id} className={index % 2 === 0 ? 'even-row' : 'odd-row'}>
                 <TableCell>{index + 1}</TableCell>
                 <TableCell>
-                  <div className="seva-details">
+                  <div onClick={()=>{changeView('seva-detail')}} className="seva-details">
                     <img src={seva.img} alt={seva.title} className="seva-image" />
                     <span>{seva.title}</span>
                   </div>
@@ -125,4 +127,4 @@ const SevasList = () => {
   );
 };
 
-export default SevasList;
+export default React.memo(SevasList);

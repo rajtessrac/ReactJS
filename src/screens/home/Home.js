@@ -10,6 +10,8 @@ import DonationsList from '../donations/DonationsList';
 import SevasList from '../sevas/SevaList';
 import CategoriesList from '../categories/CategoriesList';
 import ProfilePage from '../profile/ProfilePage';
+import Sevas from '../sevas/Sevas';
+import Categories from '../categories/Categories';
 
 
 function Home() {
@@ -26,9 +28,9 @@ function Home() {
       case 'donations':
         return <DonationsList />
       case 'sevas':
-        return <SevasList />;
+        return <Sevas />;
       case 'categories':
-        return <CategoriesList />
+        return <Categories />
       case 'profile':
         return <ProfilePage />;
       case 'report':
