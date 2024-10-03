@@ -1,20 +1,37 @@
 import React, { useState, useEffect } from 'react';
 import { TextField, Button, Select, MenuItem, InputLabel, FormControl, Box, Typography } from '@mui/material';
-import { Editor, EditorState, convertFromRaw, convertToRaw } from 'draft-js';
+import { useEditor, EditorContent } from '@tiptap/react';
 import 'draft-js/dist/Draft.css';
+import StarterKit from '@tiptap/starter-kit';
+import eventsService from '../../services/eventsService';
+import { Editable, Slate, withReact } from 'slate-react';
+import { createEditor } from 'slate';
+import { useLoader } from '../../provider/LoaderProvider';
 // import RichTextEditor from '../../components/RichTextEditor';
 
+const initialValue = [
+  {
+    type: 'paragraph',
+    children: [{ text: 'A line of text in a paragraph.' }],
+  },
+]
+
 const AddSevaForm = ({ editMode, initialData, changeView }) => {
-  
-  const initialEditorState = [
-    {
-      type: 'paragraph',
-      children: [{ text: 'Enter some rich text here!' }],
-    },
+
+  const editor = useEditor({
+    extensions: [StarterKit],
+    content: '<p>Hello World!</p>',
+  });
+
+  const recurrence = [
+    { recurringEvent: 'Select Recurring Sevas', id: -1 },
+    { recurringEvent: 'Every Day', id: 1 },
+    { recurringEvent: 'Every Week', id: 2 },
+    { recurringEvent: 'Every Month', id: 3 },
+    { recurringEvent: 'Every Year', id: 4 },
   ];
 
-  const [editorState, setEditorState] = useState(EditorState.createEmpty());
-  
+
 
   // Form fields state
   const [sevaName, setSevaName] = useState('');
@@ -25,48 +42,78 @@ const AddSevaForm = ({ editMode, initialData, changeView }) => {
   const [price, setPrice] = useState('');
   const [recurringSeva, setRecurringSeva] = useState('');
   const [image, setImage] = useState(null);
+  const [categoryList, setCategoryList] = React.useState([]);
 
   // Validation states
   const [sevaNameError, setSevaNameError] = useState(false);
   const [categoryError, setCategoryError] = useState(false);
   const [imageError, setImageError] = useState(false);
+  const { startLoader, stopLoader } = useLoader();
 
   // Handle form input changes
   const handleEditorChange = (state) => {
-    setEditorState(state);
+    // setEditorState(state);
   };
 
   const handleImageChange = (event) => {
+    console.log('image', event.target.files[0]);
     setImage(event.target.files[0]);
   };
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
+  const getCategories = async () => {
+    const response = await eventsService.getCategories();
+    if (response.data && response.data.length > 0) {
+      setCategoryList(response.data);
+    }
+  }
 
-    // Validation checks
-    setSevaNameError(!sevaName);
-    setCategoryError(!category);
-    setImageError(!image);
+  const handleSubmit = async (event) => {
 
-    if (sevaName && category && image) {
-      const formData = {
-        sevaName,
-        category,
-        startDate,
-        endDate,
-        sevaTime,
-        price,
-        recurringSeva,
-        description: convertToRaw(editorState.getCurrentContent()), // Save editor content
-        image,
-      };
-      console.log("Form submitted:", formData);
-      // Handle form submission logic here (e.g., send formData to API)
+    try {
+      startLoader();
+      event.preventDefault();
+
+      setSevaNameError(!sevaName);
+      setCategoryError(!category);
+      setImageError(!image);
+      console.log('image2', image);
+      if (sevaName && category && image) {
+        const formData = new FormData();
+        formData.append('title', sevaName);
+        formData.append('category', category);
+        formData.append('startDate', startDate);
+        formData.append('endDate', endDate);
+        formData.append('time', sevaTime);
+        formData.append('amount', price);
+        formData.append('recurrence', recurringSeva);
+        formData.append('description', '<p>test</p>');
+        formData.append('descriptionText', '');
+        formData.append('image', image);
+
+        const response = await eventsService.addEvent(formData);
+
+        if (response.success === true) {
+          alert(response.msg)
+          // navigation.navigate(ROUTE_NAMES.EVENTS_SCREEN);
+        }
+      }
+    }
+    catch (e) {
+      console.log(e);
+    }
+    finally {
+      stopLoader();
     }
   };
 
+  useEffect(() => {
+    getCategories();
+  }, [])
+
+
   // Set initial form values in edit mode
   useEffect(() => {
+
     if (editMode && initialData) {
       setSevaName(initialData.sevaName);
       setCategory(initialData.category);
@@ -75,121 +122,123 @@ const AddSevaForm = ({ editMode, initialData, changeView }) => {
       setSevaTime(initialData.sevaTime);
       setPrice(initialData.price);
       setRecurringSeva(initialData.recurringSeva);
-      setEditorState(EditorState.createWithContent(convertFromRaw(initialData.description)));
+      // setEditorState(EditorState.createWithContent(convertFromRaw(initialData.description)));
       setImage(initialData.image); // You may need to handle file previews for image
     }
   }, [editMode, initialData]);
 
   return (
-    <Box sx={{ width: '80%', margin: '0 auto', padding: '20px', boxShadow: 3 }}>
+    <Box sx={ { width: '80%', margin: '0 auto', padding: '20px', boxShadow: 3 } }>
       <Typography variant="h5" gutterBottom>
-        {editMode ? 'EDIT SEVA' : 'ADD SEVA'}
+        { editMode ? 'EDIT SEVA' : 'ADD SEVA' }
       </Typography>
-      <Box sx={{ width: '100%', display: 'flex', justifyContent: 'flex-end', marginTop: 2 }}>
-          <Button onClick={()=>{
-            changeView('seva-list')
-          }} variant="contained" color="primary" type="submit">
-            {'Back'}
-          </Button>
-        </Box>
-      <Box component="form" sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between' }} onSubmit={handleSubmit}>
-        {/* Category Field */}
-        <FormControl sx={{ width: '48%', marginBottom: 2 }} required error={categoryError}>
+      <Box sx={ { width: '100%', display: 'flex', justifyContent: 'flex-end', marginTop: 2 } }>
+        <Button onClick={ () => {
+          changeView('seva-list')
+        } } variant="contained" color="primary" type="submit">
+          { 'Back' }
+        </Button>
+      </Box>
+      <Box component="form" sx={ { display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between' } } onSubmit={ handleSubmit }>
+        {/* Category Field */ }
+        <FormControl sx={ { width: '48%', marginBottom: 2 } } required error={ categoryError }>
           <InputLabel>Select Category</InputLabel>
-          <Select value={category} onChange={(e) => setCategory(e.target.value)}>
+          <Select value={ category } onChange={ (e) => setCategory(e.target.value) }>
+
             <MenuItem value="">Select Category</MenuItem>
-            <MenuItem value="category1">Category 1</MenuItem>
-            <MenuItem value="category2">Category 2</MenuItem>
+            { categoryList.map(category => <MenuItem value={ category.id }>{ category.name }</MenuItem>) }
+
+
           </Select>
-          {categoryError && <Typography color="error">Category is required</Typography>}
+          { categoryError && <Typography color="error">Category is required</Typography> }
         </FormControl>
 
-        {/* Seva Name */}
+        {/* Seva Name */ }
         <TextField
-          sx={{ width: '48%', marginBottom: 2 }}
+          sx={ { width: '48%', marginBottom: 2 } }
           label="Seva Name"
           variant="outlined"
-          value={sevaName}
-          onChange={(e) => setSevaName(e.target.value)}
+          value={ sevaName }
+          onChange={ (e) => setSevaName(e.target.value) }
           required
-          error={sevaNameError}
-          helperText={sevaNameError ? "Seva Name is required" : ""}
+          error={ sevaNameError }
+          helperText={ sevaNameError ? "Seva Name is required" : "" }
         />
 
-        {/* Start Date */}
+        {/* Start Date */ }
         <TextField
-          sx={{ width: '48%', marginBottom: 2 }}
+          sx={ { width: '48%', marginBottom: 2 } }
           label="Start Date"
           type="date"
-          value={startDate}
-          onChange={(e) => setStartDate(e.target.value)}
-          InputLabelProps={{ shrink: true }}
+          value={ startDate }
+          onChange={ (e) => setStartDate(e.target.value) }
+          InputLabelProps={ { shrink: true } }
         />
 
-        {/* End Date */}
+        {/* End Date */ }
         <TextField
-          sx={{ width: '48%', marginBottom: 2 }}
+          sx={ { width: '48%', marginBottom: 2 } }
           label="End Date"
           type="date"
-          value={endDate}
-          onChange={(e) => setEndDate(e.target.value)}
-          InputLabelProps={{ shrink: true }}
+          value={ endDate }
+          onChange={ (e) => setEndDate(e.target.value) }
+          InputLabelProps={ { shrink: true } }
         />
 
-        {/* Seva Start Time */}
+        {/* Seva Start Time */ }
         <TextField
-          sx={{ width: '48%', marginBottom: 2 }}
+          sx={ { width: '48%', marginBottom: 2 } }
           label="Seva Start Time"
           type="time"
-          value={sevaTime}
-          onChange={(e) => setSevaTime(e.target.value)}
-          InputLabelProps={{ shrink: true }}
+          value={ sevaTime }
+          onChange={ (e) => setSevaTime(e.target.value) }
+          InputLabelProps={ { shrink: true } }
         />
 
-        {/* Price INR */}
+        {/* Price INR */ }
         <TextField
-          sx={{ width: '48%', marginBottom: 2 }}
+          sx={ { width: '48%', marginBottom: 2 } }
           label="Price INR"
           type="number"
-          value={price}
-          onChange={(e) => setPrice(e.target.value)}
-          InputLabelProps={{ shrink: true }}
+          value={ price }
+          onChange={ (e) => setPrice(e.target.value) }
+          InputLabelProps={ { shrink: true } }
         />
 
-        {/* Recurring Sevas */}
-        <FormControl sx={{ width: '48%', marginBottom: 2 }}>
+        {/* Recurring Sevas */ }
+        <FormControl sx={ { width: '48%', marginBottom: 2 } }>
           <InputLabel>Recurring Sevas</InputLabel>
-          <Select value={recurringSeva} onChange={(e) => setRecurringSeva(e.target.value)}>
-            <MenuItem value="">Select</MenuItem>
-            <MenuItem value="recurring1">Recurring 1</MenuItem>
-            <MenuItem value="recurring2">Recurring 2</MenuItem>
+          <Select value={ recurringSeva } onChange={ (e) => setRecurringSeva(e.target.value) }>
+
+            { recurrence.map(item => <MenuItem value={ item.id }>{ item.recurringEvent }</MenuItem>) }
+
           </Select>
         </FormControl>
 
-        {/* Upload Image */}
+        {/* Upload Image */ }
         <TextField
-          sx={{ width: '48%', marginBottom: 2 }}
+          sx={ { width: '48%', marginBottom: 2 } }
           type="file"
-          InputLabelProps={{ shrink: true }}
-          onChange={handleImageChange}
-          error={imageError}
-          helperText={imageError ? "Image is required" : ""}
+          InputLabelProps={ { shrink: true } }
+          onChange={ handleImageChange }
+          error={ imageError }
+          helperText={ imageError ? "Image is required" : "" }
           required
         />
 
-        {/* Description - Rich Text Editor */}
-        {/* <Box sx={{ width: '100%', marginBottom: 2 }}>
+        {/* Description - Rich Text Editor */ }
+        <Box sx={ { width: '100%', marginBottom: 2 } }>
           <Typography variant="body1">Description</Typography>
-          <Box sx={{ border: '1px solid #ccc', minHeight: '150px', padding: 1 }}>
-          <RichTextEditor value={editorState} onChange={handleEditorChange} />
+          <Box sx={ { border: '1px solid #ccc', minHeight: '150px', padding: 1 } }>
+            <EditorContent editor={ editor } />
 
           </Box>
-        </Box> */}
+        </Box>
 
-        {/* Save Button */}
-        <Box sx={{ width: '100%', display: 'flex', justifyContent: 'flex-end', marginTop: 2 }}>
+        {/* Save Button */ }
+        <Box sx={ { width: '100%', display: 'flex', justifyContent: 'flex-end', marginTop: 2 } }>
           <Button variant="contained" color="primary" type="submit">
-            {editMode ? 'Update' : 'Save'}
+            { editMode ? 'Update' : 'Save' }
           </Button>
         </Box>
       </Box>

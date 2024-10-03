@@ -7,13 +7,18 @@ import reportWebVitals from './reportWebVitals';
 import Main from './Main';
 import store from './reduxData/store';
 import { StoreProvider } from 'easy-peasy';
+import { GoogleOAuthProvider } from '@react-oauth/google';
+import { LoaderProvider } from './provider/LoaderProvider';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-<StoreProvider store={store}>
-    <Main />
-</StoreProvider>
-
+    <GoogleOAuthProvider clientId='110807456879-vsg1aeplsioiqtu51qe4e421qop3t7jc.apps.googleusercontent.com'>
+        <StoreProvider store={ store }>
+            <LoaderProvider>
+                <Main />
+            </LoaderProvider>
+        </StoreProvider>
+    </GoogleOAuthProvider>
 );
 
 // If you want to start measuring performance in your app, pass a function

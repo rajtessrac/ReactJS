@@ -5,28 +5,26 @@ import './Home.css';
 import Dashboard from '../dashboard/Dashboard';
 import ProfileDropdown from './ProfileDropdown';
 import Footer from '../footer/Footer';
-import JeevanadiMembersList from '../members/JeevanadiMembersList';
-import DonationsList from '../donations/DonationsList';
-import SevasList from '../sevas/SevaList';
-import CategoriesList from '../categories/CategoriesList';
 import ProfilePage from '../profile/ProfilePage';
 import Sevas from '../sevas/Sevas';
 import Categories from '../categories/Categories';
+import Donations from '../donations/Donations';
+import Members from '../members/Members';
 
 
 function Home() {
   const [selectedSection, setSelectedSection] = useState('dashboard');
-  
-  
+  const [open, setOpen] = useState(true);
+
 
   const renderContent = () => {
     switch (selectedSection) {
       case 'dashboard':
         return <Dashboard />;
       case 'members':
-        return <JeevanadiMembersList />
+        return <Members />
       case 'donations':
-        return <DonationsList />
+        return <Donations />
       case 'sevas':
         return <Sevas />;
       case 'categories':
@@ -37,7 +35,7 @@ function Home() {
         return <div>Coming soon</div>;
       case 'bulk-upload':
         return <div>Coming soon</div>;
-   
+
       default:
         return <Dashboard />;
     }
@@ -45,13 +43,15 @@ function Home() {
 
   return (
     <div className="App">
-      <SideMenu onSectionSelect={setSelectedSection} />
-      <div className="content">
-      <div class="full-width-div">
-      {/* <i className="fas fa-user right-button"></i> */}
-      <ProfileDropdown onSectionSelect={setSelectedSection} />
-    </div>
-        {renderContent()}
+      <SideMenu  setIsOpen={(value)=>{
+        setOpen(value);
+      }} onSectionSelect={ setSelectedSection } />
+      <div className="content"  style={{marginLeft: open ? '18%' : '5%' }} >
+        <div class="full-width-div">
+          {/* <i className="fas fa-user right-button"></i> */ }
+          <ProfileDropdown onSectionSelect={ setSelectedSection } />
+        </div>
+        { renderContent() }
       </div>
       <Footer />
     </div>

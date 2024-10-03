@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Box, Button, TextField, Typography, FormControl, InputLabel } from '@mui/material';
+import categoryService from '../../services/categoryService';
 
 const AddCategory = ({ initialData }) => {
   // If initialData is provided, it means we are in "edit" mode
@@ -19,14 +20,23 @@ const AddCategory = ({ initialData }) => {
     setImage(event.target.files[0]);
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async(event) => {
     event.preventDefault();
     // Form submission logic
-    const formData = {
-      categoryName,
-      description,
-      image,
-    };
+ 
+    const params = new FormData();
+    params.append('name', categoryName);
+    if (image)
+    params.append('cat_image', image);
+    params.append('cat_desc', description);
+    params.append('cat_desc_text', description);
+    params.append('is_active', true);
+
+    let response;
+    response = await categoryService.addCategory(params);
+    if (response.success === true) {
+      alert('Added')
+    }
     
   };
 

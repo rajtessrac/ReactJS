@@ -1,16 +1,17 @@
 import React, { useState } from 'react';
+import {  useGoogleLogin } from '@react-oauth/google';
 import './Login.css';
 import Logo from '../../assets/images/logo.png'
 import authServices from '../../services/authServices';
 import { useNavigate } from 'react-router-dom';
-import FullScreenLoader from '../../components/FullScreenLoader';
 import { useStoreActions } from 'easy-peasy';
+import { useLoader } from '../../provider/LoaderProvider';
 const Login = () => {
 
   const navigate = useNavigate();
-  const {setUser} = useStoreActions((action) => action.auth);
+  const { setUser } = useStoreActions((action) => action.auth);
   const [isVerifyOTP, setVerifyOTP] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const {startLoader, stopLoader} = useLoader();
   const inputsRef = React.useRef([]);
   const [email, setEmail] = useState('');
   const [otp, setOtp] = useState('');
@@ -19,7 +20,7 @@ const Login = () => {
     console.log('doLogin')
 
     try {
-      setIsLoading(true);
+      startLoader();
       const params = { email };
       const response = await authServices.doLogin(params);
 
@@ -31,31 +32,31 @@ const Login = () => {
     } catch (e) {
       console.log(e);
     }
-    finally{
-      setIsLoading(false);
+    finally {
+      stopLoader();
     }
   };
 
 
   const handleVerifyOTP = async () => {
-    setIsLoading(true);
+    startLoader();
     const params = {
       email,
       otp: otp.join(''),
     };
 
     try {
-      setIsLoading(true);
+      startLoader();
       const response = await authServices.verifyOTP(params);
 
       if (response?.success === true) {
-        
+
 
         localStorage.setItem('token', response.authenticatedUser.access);
         setUser(response.authenticatedUser);
-        setVerifyOTP(true)
-        navigate('/home')
-        
+        setVerifyOTP(true);
+        window.location.href = '/home'
+
         // getUserProfile(user.id);
 
 
@@ -67,8 +68,8 @@ const Login = () => {
       alert('Please try again or contact IT team')
 
     }
-    finally{
-      setIsLoading(false);
+    finally {
+      stopLoader();
     }
   };
 
@@ -100,13 +101,44 @@ const Login = () => {
     }
   };
 
+  const googleSignIn = async (token) => {
+    try {
+
+      const params = {
+        token
+      };
+      const response = await authServices.googleLogin(params);
+      if (response.success) {
+
+        localStorage.setItem('token', response.authenticatedUser.access);
+        setUser(response.authenticatedUser);
+
+        window.location.href = '/home'
+
+
+      } else {
+        alert('Login failed', 'Please try again.');
+      }
+
+    } catch (error) {
+      alert(error);
+    }
+  };
+
+
+  const doGoogleLogin = useGoogleLogin({
+    onSuccess: (codeResponse) => googleSignIn(codeResponse.access_token),
+    onError: (error) => console.log('Login Failed:', error)
+  });
+
   return (
+
     <div className="container">
       <div className="left-section">
         <p className='app-sloganle'>Standing up for vedic culture <br />is everyone's responsibility</p>
       </div>
       <div className="right-section">
-        {isVerifyOTP === false ? <div className="login-container">
+        { isVerifyOTP === false ? <div className="login-container">
           <img
             src={ Logo }
             alt="Logo"
@@ -117,7 +149,12 @@ const Login = () => {
             setEmail(e.target.value)
           } } />
           <button className="login-button" onClick={ doLogin } >Login</button>
-          <button className="google-signin-button">Sign in with Google</button>
+          {/* <GoogleLogin
+          className="google-signin-button"
+          onSuccess={handleLoginSuccess}
+          onError={handleLoginFailure}
+        /> */}
+          <button onClick={ doGoogleLogin } className="google-signin-button">Sign in with Google</button>
           <div className="terms">
             <a href="/terms">Terms and Conditions</a> |{ ' ' }
             <a href="/privacy">Privacy Policy</a>
@@ -125,7 +162,7 @@ const Login = () => {
         </div> : <div div className="login-container" >
 
           <h3>Let’s Verify OTP</h3>
-          <p className='sub-header'>{ `Enter the OTP you received to` }<br/>{`enrajesh67@gmail.com`}</p>
+          <p className='sub-header'>{ `Enter the OTP you received to` }<br />{ `enrajesh67@gmail.com` }</p>
           <div className="otp-inputs">
             { [...Array(4)].map((_, index) => (
               <input
@@ -152,8 +189,9 @@ const Login = () => {
 
 
       </div>
-      {isLoading? <FullScreenLoader size={10} />:null}
+      
     </div>
+
   );
 };
 

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useLayoutEffect, useState } from 'react';
 import {
   Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button,
   Switch, IconButton, TextField
@@ -6,14 +6,16 @@ import {
 import { Edit as EditIcon, Delete as DeleteIcon } from '@mui/icons-material';
 import './CategoriesList.css'; // Import CSS for styling
 import eventsService from '../../services/eventsService';
+import { useLoader } from '../../provider/LoaderProvider';
 
 const CategoriesList = ({changeView}) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [categories, setCategories] = useState([]);
+  const { startLoader, stopLoader } = useLoader();
 
   const getAllCategories = async () => {
     try {
-      
+      startLoader();
       const response = await eventsService.getCategories();
       if (response.data && response.data.length > 0) {
         setCategories(response.data);
@@ -21,7 +23,7 @@ const CategoriesList = ({changeView}) => {
     } catch (error) {
       console.error('Error fetching category:', error);
     } finally {
-      
+      stopLoader();
     }
   };
 

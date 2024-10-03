@@ -9,13 +9,11 @@ import { useStoreActions, useStoreState } from 'easy-peasy';
 import authServices from '../../services/authServices';
 
 
-const ProfilePage = () => {
+const ProfilePage = ({userId}) => {
   const {user} = useStoreState((state) => state.auth);
   const {setUser} = useStoreActions((action) => action.auth);
 
   React.useEffect(() => {
-    
-    alert(JSON.stringify(user))
     getProfile();
   }, [])
   
@@ -23,7 +21,7 @@ const ProfilePage = () => {
   const getProfile = async () => {
     try {
       
-      const response = await authServices.getProfile(user.id);
+      const response = await authServices.getProfile(userId);
       
       if (response.success && response.success === true) {
             console.log(response.users);

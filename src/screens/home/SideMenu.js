@@ -2,12 +2,13 @@ import React, { useState } from 'react';
 import Logo from '../../assets/images/logo.png'
 import './SideMenu.css';
 
-const SideMenu = ({ onSectionSelect }) => {
+const SideMenu = ({ onSectionSelect, setIsOpen }) => {
   const [open, setOpen] = useState(true);
   const [activeSection, setActiveSection] = useState(null);
 
   const toggleMenu = () => {
     setOpen(!open);
+    setIsOpen(!open)
   };
 
   const handleSectionClick = (section) => {

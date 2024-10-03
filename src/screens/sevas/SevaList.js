@@ -6,17 +6,19 @@ import {
 import { Edit as EditIcon, Delete as DeleteIcon, Visibility as ViewIcon } from '@mui/icons-material';
 import './SevasList.css'; // Import CSS for styling
 import eventsService from '../../services/eventsService';
+import { useLoader } from '../../provider/LoaderProvider';
 
 // Original object format
 
 const SevasList = ({changeView}) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [sevas, setSevas] = useState([]);
+   const {startLoader, stopLoader} =  useLoader();
 
 
   const getAllEvents = async () => {
     try {
-      
+      startLoader();
       const response = await eventsService.getEvents();
       if (response.events && response.events.length > 0) {
         setSevas(response.events.map((obj) => ({...obj, isSelected: false})));
@@ -24,7 +26,7 @@ const SevasList = ({changeView}) => {
     } catch (error) {
       console.error('Error fetching events:', error);
     } finally {
-      
+        stopLoader();
     }
   };
 
