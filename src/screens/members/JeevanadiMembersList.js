@@ -4,8 +4,12 @@ import { Edit as EditIcon } from '@mui/icons-material';
 import './JeevanadiList.css';
 import usersServices from '../../services/usersServices';
 import { useLoader } from '../../provider/LoaderProvider';
+import { useStoreActions } from 'easy-peasy';
 
 const JeevanadiMembersList = ({changeView}) => {
+
+  const { setReferredByList } = useStoreActions(actions=>actions.user);
+
   const [members, setMembers] = useState([]);
   const {startLoader, stopLoader} = useLoader();
   const [filteredMembers, setFilteredMembers] = useState([]);
@@ -22,6 +26,7 @@ const JeevanadiMembersList = ({changeView}) => {
       if (response.success === true) {
         
         setFilteredMembers(response.users);
+        setReferredByList(response.users);
         setMembers()
         setTotalCount(response.users.length)
       }

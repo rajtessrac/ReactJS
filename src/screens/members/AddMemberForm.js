@@ -4,12 +4,15 @@ import { Delete as DeleteIcon, Add as AddIcon } from '@mui/icons-material';
 import { mappings, nakshatramData, rashiData, relationList } from '../../utills/dropdownUtils';
 import usersServices from '../../services/usersServices';
 import { useLoader } from '../../provider/LoaderProvider';
+import { useStoreActions, useStoreState } from 'easy-peasy';
+import { isEmailValid, isIndianMobileNumber, validatePassword } from '../../helpers/validation';
+import useDidMountEffect from '../../hooks/UseDidMountEffect';
 
-const AddMemberForm = () => {
+const AddMemberForm = ({changeView}) => {
 
-  const [relationships, setRelationships] = useState([{ relation: '', name: '', mobile: '', dob: '', nakshatram: '', rashi: '', paadam: '' }]);
-  const [occasions, setOccasions] = useState([{ occ_name: '', occ_date: '' }]);
-   const {startLoader, stopLoader} = useLoader()
+  const [relationships, setRelationships] = useState([{ relation: '', name: '', mobilenum: '', dob: '', nakshatram: '', rashi: '', paadam_rel: '' }]);
+  const [occasions, setOccasions] = useState([{ occ_name: 'Raj', occ_date: '2023-02-23' }]);
+  const { startLoader, stopLoader } = useLoader()
 
   const [email, setEmail] = useState('');
   const [role, setRole] = useState(-1);
@@ -34,6 +37,11 @@ const AddMemberForm = () => {
   const [whatsAppNumber, setWhatsappNumber] = useState('');
   const [panNumber, setPanNumber] = useState('');
 
+  const [emailError, setEmailError] = useState(false);
+  const [mobileError, setMobileError] = useState(false);
+
+  const { referredByList } = useStoreState(state => state.user);
+
 
   // Function to handle adding a new row
   const handleAddRow = () => {
@@ -44,17 +52,38 @@ const AddMemberForm = () => {
     setOccasions([...occasions, { occ_name: '', occ_date: '' }]);
   };
 
-  const addMember = () => {
-    const user = { "email": email, "role": role, "profile": { "full_name": fullName, "first_name": "", "last_name": "", "phone_number": phoneNumber, "gender": gender, "profession":profession, "date_of_birth": birthDate, "anniv_date": anniversaryDate, "address": address, "country":country, "city": city, "state": state, "gothram": gothram, "nakshatram": nakshatram, "rashi": rashi, "paadam": paadam, "communication_pref": communication_pref, "marital_status": maritalStatus, "referred_by": referredBy, "pincode": pincode, "whatsapp_number": whatsAppNumber, "pan_number": panNumber }, "relations": relationships, occassions: occasions, "donation": { "amount": 0, "is_80G_applicable": true, "event_name": "", "payment_type": "" } }
+  useDidMountEffect(() => {
 
-      console.log('user', user);
+    if (!isEmailValid(email)) {
+      setEmailError(true)
+    }
+    else {
+      setEmailError(false)
+    }
+  }, [email])
+
+  useDidMountEffect(() => {
+
+    if (isIndianMobileNumber(phoneNumber)) {
+      setMobileError(true)
+    }
+    else {
+      setMobileError(false)
+    }
+  }, [phoneNumber])
+
+
+  const addMember = async() => {
+
+
+    const user = { "email": email, "role": role, "profile": { "full_name": fullName, "first_name": "", "last_name": "", "phone_number": phoneNumber, "gender": gender, "profession": profession, "date_of_birth": birthDate, "anniv_date": anniversaryDate, "address": address, "country": country, "city": city, "state": state, "gothram": gothram, "nakshatram": nakshatram, "rashi": rashi, "paadam": paadam, "communication_pref": communication_pref, "marital_status": maritalStatus, "referred_by": referredBy, "pincode": pincode, "whatsapp_number": whatsAppNumber, "pan_number": panNumber }, "relations": relationships, occassions: occasions, "donation": { "amount": 0, "is_80G_applicable": true, "event_name": "", "payment_type": "" } }
+
     try {
-      // startLoader();
-      // const response =  usersServices.addUser({user});
-      // if(response.success)
-      // {
-
-      // }
+      startLoader();
+      const response = await usersServices.addUser(user);
+      if (response?.data === 'successfully added') {
+        changeView('members-list');
+      }
     }
     catch (e) {
       console.log(e);
@@ -118,7 +147,7 @@ const AddMemberForm = () => {
                   <FormControl fullWidth size="small">
                     <InputLabel>Gender</InputLabel>
                     <Select onChange={ (e) => setGender(e.target.value) } >
-                      {mappings.gender.map(item => {
+                      { mappings.gender.map(item => {
                         return <MenuItem value={ item.short }>{ item.value }</MenuItem>
                       }) }
                     </Select>
@@ -127,7 +156,7 @@ const AddMemberForm = () => {
                 <Grid item xs={ 6 }>
                   <FormControl fullWidth size="small">
                     <InputLabel>Marital Status</InputLabel>
-                    <Select  onChange={ (e) => setMaritalStatus(e.target.value) } >
+                    <Select onChange={ (e) => setMaritalStatus(e.target.value) } >
                       { mappings.maritalStatus.map(item => {
                         return <MenuItem value={ item.value }>{ item.value }</MenuItem>
                       }) }
@@ -214,7 +243,14 @@ const AddMemberForm = () => {
                   </FormControl>
                 </Grid>
                 <Grid item xs={ 6 }>
-                  <TextField onChange={ (e) => setReferredBy(e.target.value) }   fullWidth label="Referred By" variant="outlined" size="small" />
+                  <FormControl fullWidth size="small">
+                    <InputLabel>Referred By</InputLabel>
+                    <Select onChange={ (e) => setReferredBy(e.target.value) } >
+                      { referredByList.map(item => {
+                        return <MenuItem value={ item.id }>{ item.email }</MenuItem>
+                      }) }
+                    </Select>
+                  </FormControl>
                 </Grid>
               </Grid>
             </CardContent>
@@ -229,10 +265,14 @@ const AddMemberForm = () => {
               <Typography variant="h6">Contact Details</Typography>
               <Grid container spacing={ 2 }>
                 <Grid item xs={ 6 }>
-                  <TextField onChange={ (e) => setPhoneNumber(e.target.value) } fullWidth label="Mobile Number" variant="outlined" size="small" required />
+                  <TextField onChange={ (e) => setPhoneNumber(e.target.value) } fullWidth label="Mobile Number" variant="outlined" size="small" required
+                    error={ mobileError }
+                    helperText={ mobileError ? "Mobile No is required" : "" } />
                 </Grid>
                 <Grid item xs={ 6 }>
-                  <TextField onChange={ (e) => setEmail(e.target.value) } fullWidth label="Email" variant="outlined" size="small" required />
+                  <TextField onChange={ (e) => setEmail(e.target.value) } fullWidth label="Email" variant="outlined" size="small" required
+                    error={ emailError }
+                    helperText={ emailError ? "Email required" : "" } />
                 </Grid>
 
                 <Grid item xs={ 6 }>
@@ -257,10 +297,10 @@ const AddMemberForm = () => {
 
               <Grid container spacing={ 2 } style={ { marginTop: '16px' } }>
                 <Grid item xs={ 6 }>
-                  <TextField  onChange={ (e) => setCity(e.target.value) }fullWidth label="City" variant="outlined" size="small" />
+                  <TextField onChange={ (e) => setCity(e.target.value) } fullWidth label="City" variant="outlined" size="small" />
                 </Grid>
                 <Grid item xs={ 6 }>
-                  <TextField  onChange={ (e) => setState(e.target.value) }  fullWidth label="State" variant="outlined" size="small" />
+                  <TextField onChange={ (e) => setState(e.target.value) } fullWidth label="State" variant="outlined" size="small" />
                 </Grid>
               </Grid>
 
@@ -269,7 +309,7 @@ const AddMemberForm = () => {
                   <TextField onChange={ (e) => setCountry(e.target.value) } fullWidth label="Country" variant="outlined" size="small" />
                 </Grid>
                 <Grid item xs={ 6 }>
-                  <TextField  onChange={ (e) => setPinCode(e.target.value) } fullWidth label="Pincode" variant="outlined" size="small" />
+                  <TextField onChange={ (e) => setPinCode(e.target.value) } fullWidth label="Pincode" variant="outlined" size="small" />
                 </Grid>
               </Grid>
             </CardContent>
