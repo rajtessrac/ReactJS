@@ -46,7 +46,7 @@ function Home() {
       <SideMenu  setIsOpen={(value)=>{
         setOpen(value);
       }} onSectionSelect={ setSelectedSection } />
-      <div className="content"  style={{marginLeft: open ? '18%' : '5%' }} >
+      <div className="content"  style={{marginLeft: open ? '14%' : '3%' }} >
         <div class="full-width-div">
           {/* <i className="fas fa-user right-button"></i> */ }
           <ProfileDropdown onSectionSelect={ setSelectedSection } />

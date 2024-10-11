@@ -93,9 +93,11 @@ const DonationsList = ({ changeView }) => {
             onChange={ handleSearch }
           />
           <Button onClick={ () => {
-            changeView('add-donation')
+            changeView('add-donation', { donationType: 'offline' })
           } } variant="contained" color="primary">Add Donation</Button>
-          <Button variant="contained" color="primary">Donate Online</Button>
+          <Button onClick={ () => {
+            changeView('add-donation', { donationType: 'online' })
+          } } variant="contained" color="primary">Donate Online</Button>
         </div>
       </div>
       <TableContainer component={ Paper }>

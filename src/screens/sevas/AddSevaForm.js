@@ -62,6 +62,8 @@ const AddSevaForm = ({ editMode, initialData, changeView }) => {
 
   const getCategories = async () => {
     const response = await eventsService.getCategories();
+    alert(response);
+    console.log('response', response);
     if (response.data && response.data.length > 0) {
       setCategoryList(response.data);
     }
@@ -107,6 +109,7 @@ const AddSevaForm = ({ editMode, initialData, changeView }) => {
   };
 
   useEffect(() => {
+    alert('hii')
     getCategories();
   }, [])
 

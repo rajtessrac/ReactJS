@@ -1,18 +1,17 @@
 import React, { useState, useCallback } from 'react';
-
 import DonationForm from './DonationForm';
-import DonationDetail from './DonationDetails';
-import AddDonation from './DonationForm';
 import DonationsList from './DonationsList';
 import DonationDetails from './DonationDetails';
-import SevaUI from './SevaDonations';
+
 
 function Donations() {
   const [currentView, setCurrentView] = useState('category-list'); // Initial view set to 'category-list'
+  const [currentParams, setCurrentParams] = useState(undefined);
 
   // Memoize the changeView function to prevent re-creation on every render
-  const changeView = useCallback((view) => {
+  const changeView = useCallback((view, params) => {
     setCurrentView(view);
+    setCurrentParams(params)
   }, []);
 
   const renderView = () => {
@@ -20,7 +19,7 @@ function Donations() {
       case 'donation-list':
         return <DonationsList changeView={changeView} />;
       case 'add-donation':
-        return <DonationForm changeView={changeView} />;
+        return <DonationForm donationType={currentParams?.donationType}  changeView={changeView} />;
       case 'donation-detail':
           return <DonationDetails changeView={changeView} />;
       default:
