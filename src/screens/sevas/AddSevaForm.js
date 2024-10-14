@@ -62,7 +62,7 @@ const AddSevaForm = ({ editMode, initialData, changeView }) => {
 
   const getCategories = async () => {
     const response = await eventsService.getCategories();
-    alert(response);
+    
     console.log('response', response);
     if (response.data && response.data.length > 0) {
       setCategoryList(response.data);
@@ -78,7 +78,7 @@ const AddSevaForm = ({ editMode, initialData, changeView }) => {
       setSevaNameError(!sevaName);
       setCategoryError(!category);
       setImageError(!image);
-      console.log('image2', image);
+      
       if (sevaName && category && image) {
         const formData = new FormData();
         formData.append('title', sevaName);
@@ -95,8 +95,8 @@ const AddSevaForm = ({ editMode, initialData, changeView }) => {
         const response = await eventsService.addEvent(formData);
 
         if (response.success === true) {
-          alert(response.msg)
-          // navigation.navigate(ROUTE_NAMES.EVENTS_SCREEN);
+          
+          changeView('seva-list');
         }
       }
     }
@@ -109,7 +109,6 @@ const AddSevaForm = ({ editMode, initialData, changeView }) => {
   };
 
   useEffect(() => {
-    alert('hii')
     getCategories();
   }, [])
 

@@ -10,12 +10,13 @@ import Sevas from '../sevas/Sevas';
 import Categories from '../categories/Categories';
 import Donations from '../donations/Donations';
 import Members from '../members/Members';
+import { useStoreState } from 'easy-peasy';
 
 
 function Home() {
   const [selectedSection, setSelectedSection] = useState('dashboard');
   const [open, setOpen] = useState(true);
-
+  const {user} = useStoreState((state) => state.auth);
 
   const renderContent = () => {
     switch (selectedSection) {
@@ -30,7 +31,7 @@ function Home() {
       case 'categories':
         return <Categories />
       case 'profile':
-        return <ProfilePage />;
+        return <ProfilePage userId={user.id} />;
       case 'report':
         return <div>Coming soon</div>;
       case 'bulk-upload':

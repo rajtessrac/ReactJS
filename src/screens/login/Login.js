@@ -38,7 +38,7 @@ const Login = () => {
   };
 
 
-  const handleVerifyOTP = async () => {
+  const handleVerifyOTP = async (e) => {
     startLoader();
     const params = {
       email,
@@ -50,13 +50,13 @@ const Login = () => {
       const response = await authServices.verifyOTP(params);
 
       if (response?.success === true) {
-
+        e.preventDefault();
 
         localStorage.setItem('token', response.authenticatedUser.access);
         setUser(response.authenticatedUser);
         setVerifyOTP(true);
         window.location.href = '/home'
-
+        
         // getUserProfile(user.id);
 
 

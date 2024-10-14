@@ -8,10 +8,10 @@ import { useStoreActions, useStoreState } from 'easy-peasy';
 import { isEmailValid, isIndianMobileNumber, validatePassword } from '../../helpers/validation';
 import useDidMountEffect from '../../hooks/UseDidMountEffect';
 
-const AddMemberForm = ({changeView}) => {
+const AddMemberForm = ({ changeView }) => {
 
   const [relationships, setRelationships] = useState([{ relation: '', name: '', mobilenum: '', dob: '', nakshatram: '', rashi: '', paadam_rel: '' }]);
-  const [occasions, setOccasions] = useState([{ occ_name: 'Raj', occ_date: '2023-02-23' }]);
+  const [occasions, setOccasions] = useState([{ occ_name: '', occ_date: '' }]);
   const { startLoader, stopLoader } = useLoader()
 
   const [email, setEmail] = useState('');
@@ -73,10 +73,13 @@ const AddMemberForm = ({changeView}) => {
   }, [phoneNumber])
 
 
-  const addMember = async() => {
+  const addMember = async () => {
+
+    let finalRelationships = relationships.filter(item => item.relation !== '' && item.name !== '');
+    let finalOccasions = occasions.filter(item => item.occ_name !== '' && item.occ_date !== '');;
 
 
-    const user = { "email": email, "role": role, "profile": { "full_name": fullName, "first_name": "", "last_name": "", "phone_number": phoneNumber, "gender": gender, "profession": profession, "date_of_birth": birthDate, "anniv_date": anniversaryDate, "address": address, "country": country, "city": city, "state": state, "gothram": gothram, "nakshatram": nakshatram, "rashi": rashi, "paadam": paadam, "communication_pref": communication_pref, "marital_status": maritalStatus, "referred_by": referredBy, "pincode": pincode, "whatsapp_number": whatsAppNumber, "pan_number": panNumber }, "relations": relationships, occassions: occasions, "donation": { "amount": 0, "is_80G_applicable": true, "event_name": "", "payment_type": "" } }
+    const user = { "email": email, "role": role, "profile": { "full_name": fullName, "first_name": "", "last_name": "", "phone_number": phoneNumber, "gender": gender, "profession": profession, "date_of_birth": birthDate, "anniv_date": anniversaryDate, "address": address, "country": country, "city": city, "state": state, "gothram": gothram, "nakshatram": nakshatram, "rashi": rashi, "paadam": paadam, "communication_pref": communication_pref, "marital_status": maritalStatus, "referred_by": referredBy, "pincode": pincode, "whatsapp_number": whatsAppNumber, "pan_number": panNumber }, "donation": { "amount": 0, "is_80G_applicable": true, "event_name": "", "payment_type": "" } }
 
     try {
       startLoader();
@@ -115,6 +118,12 @@ const AddMemberForm = ({changeView}) => {
     const newRelationships = [...relationships];
     newRelationships[index][field] = value;
     setRelationships(newRelationships);
+  };
+
+  const handleOccasionsChange = (index, field, value) => {
+    const newOccasions = [...occasions];
+    newOccasions[index][field] = value;
+    setOccasions(newOccasions);
   };
 
   return (
@@ -450,7 +459,7 @@ const AddMemberForm = ({changeView}) => {
                       variant="outlined"
                       size="small"
                       value={ occasion.occ_name }
-                      onChange={ (e) => handleChange(index, 'occ_name', e.target.value) }
+                      onChange={ (e) => handleOccasionsChange(index, 'occ_name', e.target.value) }
                     />
                   </Grid>
                   <Grid item xs={ 5 }>
@@ -462,7 +471,7 @@ const AddMemberForm = ({changeView}) => {
                       variant="outlined"
                       size="small"
                       value={ occasion.occ_date }
-                      onChange={ (e) => handleChange(index, 'occ_date', e.target.value) }
+                      onChange={ (e) => handleOccasionsChange(index, 'occ_date', e.target.value) }
                     />
                   </Grid>
                   <Grid item xs={ 1 }>
