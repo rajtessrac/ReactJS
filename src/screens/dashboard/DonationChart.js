@@ -58,7 +58,8 @@ const DonationChart = ({totalDonationByDateList}) => {
           <i className="fas fa-eye"></i> View All
         </a>
       </div>
-      <Line data={data} options={options} />
+      {data.length > 0 ? <Line data={data} options={options} /> : null}
+      
     </div>
   );
 };

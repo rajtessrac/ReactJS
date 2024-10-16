@@ -110,7 +110,7 @@ const SevasList = ({changeView}) => {
                 <TableCell>{seva.start_date || '-'}</TableCell>
                 <TableCell>{seva.end_date || '-'}</TableCell>
                 <TableCell>
-                  <IconButton color="primary">
+                  <IconButton onClick={()=>changeView('seva-detail')} color="primary">
                     <ViewIcon />
                   </IconButton>
                   <IconButton color="primary">

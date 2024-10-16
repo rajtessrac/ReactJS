@@ -11,7 +11,7 @@ const SevaDetail = ({changeView}) => {
   };
 
   return (
-    <Box sx={{ width: '80%', margin: '0 auto', padding: '20px', boxShadow: 3 }}>
+    <Box sx={{ width: '80%', margin: '25 auto', padding: '20px', boxShadow: 3 }}>
       {/* Seva Name */}
       <Typography variant="h5" gutterBottom>
         {seva.name}

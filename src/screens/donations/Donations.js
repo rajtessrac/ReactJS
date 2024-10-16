@@ -5,7 +5,7 @@ import DonationDetails from './DonationDetails';
 
 
 function Donations() {
-  const [currentView, setCurrentView] = useState('category-list'); // Initial view set to 'category-list'
+  const [currentView, setCurrentView] = useState('donation-list'); // Initial view set to 'category-list'
   const [currentParams, setCurrentParams] = useState(undefined);
 
   // Memoize the changeView function to prevent re-creation on every render
@@ -21,7 +21,7 @@ function Donations() {
       case 'add-donation':
         return <DonationForm donationType={currentParams?.donationType}  changeView={changeView} />;
       case 'donation-detail':
-          return <DonationDetails changeView={changeView} />;
+          return <DonationDetails donation={currentParams?.donation} changeView={changeView} />;
       default:
         return <DonationsList changeView={changeView} />;
     }

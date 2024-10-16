@@ -1,7 +1,8 @@
 import React from 'react';
 import { Button, Typography, Grid, Box, Link } from '@mui/material';
 
-const DonationDetails = ({changeView}) => {
+const DonationDetails = ({changeView,donation}) => {
+
   return (
     <Box
       sx={{
@@ -9,52 +10,52 @@ const DonationDetails = ({changeView}) => {
         backgroundColor: '#f5f5f5',
         borderRadius: '8px',
         maxWidth: '1200px',
-        margin: 'auto',
+        margin: '32px',
       }}
     >
       <Typography variant="h5" gutterBottom>
-        DONATION DETAILS OF 0006
+        {`DONATION DETAILS OF ${donation.jeevanadi_no}`}
       </Typography>
       <Grid container spacing={3} sx={{ marginTop: '10px' }}>
         <Grid item xs={4}>
           <Typography variant="body1" fontWeight="bold">
             AMOUNT DONATED
           </Typography>
-          <Typography>₹9.00</Typography>
+          <Typography>{`${donation?.amount.toFixed(2) || ''}`}</Typography>
         </Grid>
         <Grid item xs={4}>
           <Typography variant="body1" fontWeight="bold">
             SEVA NAME
           </Typography>
           <Typography component={Link} href="#">
-            Regular Donation
+            {`${donation?.event_name ||  'Regular Donation'}`}
           </Typography>
         </Grid>
         <Grid item xs={4}>
           <Typography variant="body1" fontWeight="bold">
             FULL NAME
           </Typography>
-          <Typography>Shalini B</Typography>
+          <Typography>{`${donation?.full_name || ''}`}</Typography>
         </Grid>
 
         <Grid item xs={4}>
           <Typography variant="body1" fontWeight="bold">
             PHONE NUMBER
           </Typography>
-          <Typography>9191919191</Typography>
+          <Typography>{`${donation?.phone_number || ''}`}</Typography>
         </Grid>
         <Grid item xs={4}>
           <Typography variant="body1" fontWeight="bold">
             GOTHRAM
           </Typography>
-          <Typography>-</Typography>
+          <Typography>{`${donation?.full_name || ''}`}</Typography>
         </Grid>
         <Grid item xs={4}>
           <Typography variant="body1" fontWeight="bold">
             EMAIL
           </Typography>
-          <Typography component={Link} href="mailto:shalini.b@tessrac.com">
-            shalini.b@tessrac.com
+          <Typography component={Link} href={`${donation?.email || ''}`}>
+          {`${donation?.email || ''}`}
           </Typography>
         </Grid>
 
@@ -62,20 +63,20 @@ const DonationDetails = ({changeView}) => {
           <Typography variant="body1" fontWeight="bold">
             PAADAM
           </Typography>
-          <Typography>-</Typography>
+          <Typography>{`${donation?.full_name || ''}`}</Typography>
         </Grid>
         <Grid item xs={4}>
           <Typography variant="body1" fontWeight="bold">
             SPECIAL OCCASION
           </Typography>
-          <Typography>-</Typography>
+          <Typography>{`${donation?.full_name || ''}`}</Typography>
         </Grid>
         <Grid item xs={4}>
           <Typography variant="body1" fontWeight="bold">
             PAYMENT TYPE
           </Typography>
           <Typography component={Link} href="#">
-            Offline
+          {`${donation?.full_name || ''}`}
           </Typography>
         </Grid>
 
@@ -83,12 +84,12 @@ const DonationDetails = ({changeView}) => {
           <Typography variant="body1" fontWeight="bold">
             COMMENTS
           </Typography>
-          <Typography>-</Typography>
+          <Typography>{`${donation?.full_name || ''}`}</Typography>
         </Grid>
       </Grid>
 
       <Box mt={4}>
-        <Button variant="contained" color="primary">
+        <Button onClick={()=>changeView('donation-list')} variant="contained" color="primary">
           Back
         </Button>
       </Box>
