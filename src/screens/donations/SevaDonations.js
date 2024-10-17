@@ -2,13 +2,17 @@ import React, { useState } from 'react';
 import { Box, Button, Grid, Card, CardContent, Typography } from '@mui/material';
 import RegularDonation from './RegularDonation';
 import eventsService from '../../services/eventsService';
+import { useLoader } from '../../provider/LoaderProvider';
+import moment from 'moment';
+import donationService from '../../services/donationService';
 
 
 const SevaDonations = ({type, donationType}) => {
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [selectedEvent, setSelectedEvent] = useState(null);
-
+  const donationRef = React.useRef(null);
   const [categoryList, setCategoryList] = React.useState([]);
+  const { startLoader, stopLoader } = useLoader();
 
   const getCategories = async () => {
     const response = await eventsService.getCategories();
@@ -16,6 +20,8 @@ const SevaDonations = ({type, donationType}) => {
       setCategoryList(response.data);
     }
   }
+
+
   
   
   React.useEffect(() => {
@@ -23,8 +29,35 @@ const SevaDonations = ({type, donationType}) => {
   }, [])
 
   
-  const setData = ()=>{
+  const saveDonations = async()=>{
+    let donation = donationRef.current.getData();
+    
+    
+    const eventJSON = {"category_id":selectedCategory.id,"event_id":selectedEvent.id, "title":selectedCategory.title,"amount":selectedCategory.amount,"category_name":selectedCategory.name, "quantity":1}
+    
+    donation.append('event_name', selectedEvent.title);
+    donation.append('events_json', eventJSON)
 
+
+    startLoader();
+    try {
+      const response = await donationService.addRegularDonationList(donation, donationType);
+      console.log('response', response);
+      if (response?.success === true || response?.razorpay_key) {
+        alert('Success')
+      //  doRozarpay(response);
+      } else {
+        alert('Error while paying donation');
+      }
+    } catch (error) {
+      alert('Please try again or contact IT team');
+      console.log('error', error)
+    } finally {
+      stopLoader();
+    }
+    
+
+    
   }
 
   const handleCategoryClick = (cat) => {
@@ -90,8 +123,8 @@ const SevaDonations = ({type, donationType}) => {
               <Typography variant="h6">
                 Selected Donation Type: {selectedEvent.title}
               </Typography>
-               <RegularDonation donationType={donationType} type={type} getData={setData} />
-              <Button style={{marginTop: 22}}  variant="contained" color="primary">Update Donation</Button>
+               <RegularDonation donationType={donationType} type={type} ref={donationRef} />
+              <Button onClick={saveDonations} style={{marginTop: 22}}  variant="contained" color="primary">Update Donation</Button>
             </Box>
           )}
         </>

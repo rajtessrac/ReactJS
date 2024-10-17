@@ -17,7 +17,7 @@ import { useLoader } from '../../provider/LoaderProvider';
 import donationService from '../../services/donationService';
 import { useRazorpay, RazorpayOrderOptions } from "react-razorpay";
 
-const RegularDonation = ({ changeView, donationType, type }) => {
+const RegularDonation = React.forwardRef(({ changeView, donationType, type, getData }, ref) => {
 
   const { error, isLoading, Razorpay } = useRazorpay();
 
@@ -33,10 +33,11 @@ const RegularDonation = ({ changeView, donationType, type }) => {
     }
   };
 
+
+
   const [jeevanadiNo, setJeevanadiNo] = React.useState('');
   const [trustName, setTrustName] = React.useState('');
   const [amount, setAmount] = React.useState('');
-  const [panNo, setPanNo] = React.useState('');
   const [email, setEmail] = React.useState('');
   const [fullName, setFullName] = React.useState('');
   const [phoneNumber, setPhoneNumber] = React.useState('');
@@ -51,12 +52,49 @@ const RegularDonation = ({ changeView, donationType, type }) => {
   const [nakshatram, setNakstram] = React.useState('');
   const [rashi, setRashi] = React.useState('');
 
-
-  const addRegularDonation = async() => {
-   
-    const formattedDateTime = transactionDate
+  React.useImperativeHandle(ref, () => ({
+    getData() {
+      const formattedDateTime = transactionDate
         ? moment(transactionDate).utc().format('YYYY-MM-DDTHH:mm')
         : '';
+      const formDate = new FormData();
+      formDate.append('jeevanadi_no', jeevanadiNo);
+      formDate.append('trust_name', trustName);
+      // formDate.append('pan_number', panNo);
+      formDate.append('amount', amount);
+      formDate.append('email', email);
+      formDate.append('full_name', fullName);
+      formDate.append('phone_number', phoneNumber);
+      formDate.append('gothram', gothram);
+      formDate.append('nakshatram', nakshatram);
+      formDate.append('rashi', rashi);
+      formDate.append('paadam', paadam);
+      formDate.append('payment_type', donationType === 'online' ? '2' : '1');
+      formDate.append('payment_mode', 'Online Transfer');
+      formDate.append('event_name', 'Regular Donation');
+      formDate.append('payment_id', transactionNo);
+      formDate.append('payment_datetime', formattedDateTime);
+      formDate.append('comments', comments);
+      formDate.append('address', address);
+      if (selectedFile) {
+        formDate.append('attachment', selectedFile);
+      }
+
+      return formDate;
+    }
+  }));
+
+  React.useEffect(() => {
+    alert(transactionDate)
+  }, [transactionDate])
+
+
+
+  const addRegularDonation = async () => {
+
+    const formattedDateTime = transactionDate
+      ? moment(transactionDate).utc().format('YYYY-MM-DDTHH:mm')
+      : '';
     const formDate = new FormData();
     formDate.append('jeevanadi_no', jeevanadiNo);
     formDate.append('trust_name', trustName);
@@ -69,8 +107,8 @@ const RegularDonation = ({ changeView, donationType, type }) => {
     formDate.append('nakshatram', nakshatram);
     formDate.append('rashi', rashi);
     formDate.append('paadam', paadam);
-    formDate.append('payment_type', '2');
-    formDate.append('payment_mode', 'Online Transfer');
+    formDate.append('payment_type', donationType === 'online' ? '2' : '1');
+    formDate.append('payment_mode', donationType === 'online' ? '' : 'Online Transfer');
     formDate.append('event_name', 'Regular Donation');
     formDate.append('payment_id', transactionNo);
     formDate.append('payment_datetime', formattedDateTime);
@@ -107,7 +145,7 @@ const RegularDonation = ({ changeView, donationType, type }) => {
         console.log(response);
         alert("Payment Successful!");
       },
-   
+
       theme: {
         color: "#F37254",
       },
@@ -115,7 +153,7 @@ const RegularDonation = ({ changeView, donationType, type }) => {
 
     const razorpayInstance = new Razorpay(options);
     razorpayInstance.open();
- 
+
   };
 
   return (
@@ -186,7 +224,7 @@ const RegularDonation = ({ changeView, donationType, type }) => {
       </Box>
 
       <Box sx={ { display: 'flex', gap: 2, marginTop: '20px' } }>
-        <TextField nge={ (e) => setTransactionNo(e.target.value) } label="Transaction Number" fullWidth />
+        <TextField onChange={ (e) => setTransactionNo(e.target.value) } label="Transaction Number" fullWidth />
         <TextField
           sx={ { width: '48%', marginBottom: 2 } }
           label="Transaction Date"
@@ -212,15 +250,15 @@ const RegularDonation = ({ changeView, donationType, type }) => {
           onChange={ handleFileChange }
           style={ { display: 'block' } }
         />
-       
+
       </Box>
 
       { type === 'regular' ?
-          <Button onClick={()=>{
-            addRegularDonation();
-          }} style={{marginTop: 20}} variant="contained" color="primary">
-            Update Donation
-          </Button> : null }
+        <Button onClick={ () => {
+          addRegularDonation();
+        } } style={ { marginTop: 20 } } variant="contained" color="primary">
+          Update Donation
+        </Button> : null }
       {/* Show Image Preview */ }
       { preview && (
         <Box sx={ { marginTop: 2 } }>
@@ -233,6 +271,6 @@ const RegularDonation = ({ changeView, donationType, type }) => {
       ) }
     </Box>
   );
-};
+});
 
 export default RegularDonation;
