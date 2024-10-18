@@ -55,7 +55,9 @@ const Login = () => {
         localStorage.setItem('token', response.authenticatedUser.access);
         setUser(response.authenticatedUser);
         setVerifyOTP(true);
-        window.location.href = '/home'
+        //window.location.href = '/home'
+        navigate('/home',{replace: true})
+
         
         // getUserProfile(user.id);
 

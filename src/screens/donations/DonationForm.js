@@ -33,7 +33,7 @@ const DonationForm = ({ changeView, donationType }) => {
         <Tab label="Sevas" />
       </Tabs>
 
-      { tabValue === 0 ? <RegularDonation donationType={ donationType } changeView={ changeView } type={ 'regular' } /> : <SevaDonations donationType={ donationType } changeView={ changeView } type={ 'seva' } /> }
+      { tabValue === 0 ? <RegularDonation donationType={ donationType } changeView={ changeView } type={ 'regular' } /> : <SevaDonations donationType={ donationType } changeView={ changeView } type={ 'seva' } changeVie={changeView} /> }
 
 
     </Box>

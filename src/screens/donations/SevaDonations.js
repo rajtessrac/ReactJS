@@ -7,7 +7,7 @@ import moment from 'moment';
 import donationService from '../../services/donationService';
 
 
-const SevaDonations = ({type, donationType}) => {
+const SevaDonations = ({type, donationType, changeView}) => {
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [selectedEvent, setSelectedEvent] = useState(null);
   const donationRef = React.useRef(null);
@@ -33,10 +33,9 @@ const SevaDonations = ({type, donationType}) => {
     let donation = donationRef.current.getData();
     
     
-    const eventJSON = {"category_id":selectedCategory.id,"event_id":selectedEvent.id, "title":selectedCategory.title,"amount":selectedCategory.amount,"category_name":selectedCategory.name, "quantity":1}
-    
+    const eventJSON = {"category_id":selectedCategory.id,"event_id":selectedEvent.id, "title":selectedEvent.title,"amount":selectedCategory.amount,"category_name":selectedCategory.name, "quantity":1, amount: selectedEvent.amount }
     donation.append('event_name', selectedEvent.title);
-    donation.append('events_json', eventJSON)
+    donation.append('events_json', JSON.stringify(eventJSON))
 
 
     startLoader();
@@ -44,8 +43,15 @@ const SevaDonations = ({type, donationType}) => {
       const response = await donationService.addRegularDonationList(donation, donationType);
       console.log('response', response);
       if (response?.success === true || response?.razorpay_key) {
-        alert('Success')
-      //  doRozarpay(response);
+        if(donationType=== 'online')
+        {
+          doRozarpay(response);
+        }
+        else
+        {
+          changeView('donation-list')
+        }
+        
       } else {
         alert('Error while paying donation');
       }
@@ -59,6 +65,30 @@ const SevaDonations = ({type, donationType}) => {
 
     
   }
+
+
+  const doRozarpay = (payment) => {
+
+    const options = {
+      currency: 'INR',
+      key: payment.razorpay_key,
+      amount: payment.order.amount,
+      name: payment.name,
+      order_id: payment.order.id,
+      handler: (response) => {
+        //console.log(response);
+        changeView('donation-list')
+      },
+
+      theme: {
+        color: "#F37254",
+      },
+    };
+
+    const razorpayInstance = new Razorpay(options);
+    razorpayInstance.open();
+
+  };
 
   const handleCategoryClick = (cat) => {
     if(cat.events.length > 0)

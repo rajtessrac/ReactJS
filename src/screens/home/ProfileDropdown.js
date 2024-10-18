@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './ProfileDropdown.css';
+import { useStoreState } from 'easy-peasy';
 
 const ProfileDropdown = ({onSectionSelect}) => {
   const [isOpen, setIsOpen] = useState(false);
+  const {user} = useStoreState((state) => state.auth);
   const navigate = useNavigate();
 
   const toggleDropdown = () => {
@@ -22,7 +24,7 @@ const ProfileDropdown = ({onSectionSelect}) => {
     // Add your logic for logging out the user
     setIsOpen(false);
     localStorage.clear();
-    navigate('login')
+    navigate('/login', { replace: true });
   };
 
   return (
@@ -39,8 +41,8 @@ const ProfileDropdown = ({onSectionSelect}) => {
                 <i className="fas fa-user-circle"></i>
               </div>
               <div className="user-info">
-                <h4>Amit Patel Test1</h4>
-                <p>enrajesh67@gmail.com</p>
+                <h4>{user.email}</h4>
+                <p>{user.profile.full_name}</p>
               </div>
             </div>
             <div className="dropdown-item" onClick={handleProfileClick}>

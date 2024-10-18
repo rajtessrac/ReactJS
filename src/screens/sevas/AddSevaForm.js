@@ -90,7 +90,7 @@ const AddSevaForm = ({ editMode, initialData, changeView }) => {
         formData.append('recurrence', recurringSeva);
         formData.append('description', '<p>test</p>');
         formData.append('descriptionText', '');
-        formData.append('image', image);
+        formData.append('img', image);
 
         const response = await eventsService.addEvent(formData);
 

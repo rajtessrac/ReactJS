@@ -79,7 +79,7 @@ const AddMemberForm = ({ changeView }) => {
     let finalOccasions = occasions.filter(item => item.occ_name !== '' && item.occ_date !== '');;
 
 
-    const user = { "email": email, "role": role, "profile": { "full_name": fullName, "first_name": "", "last_name": "", "phone_number": phoneNumber, "gender": gender, "profession": profession, "date_of_birth": birthDate, "anniv_date": anniversaryDate, "address": address, "country": country, "city": city, "state": state, "gothram": gothram, "nakshatram": nakshatram, "rashi": rashi, "paadam": paadam, "communication_pref": communication_pref, "marital_status": maritalStatus, "referred_by": referredBy, "pincode": pincode, "whatsapp_number": whatsAppNumber, "pan_number": panNumber }, "donation": { "amount": 0, "is_80G_applicable": true, "event_name": "", "payment_type": "" } }
+    const user = { "email": email, "role": role, "profile": { "full_name": fullName, "first_name": "", "last_name": "", "phone_number": phoneNumber, "gender": gender, "profession": profession, "date_of_birth": birthDate, "anniv_date": anniversaryDate, "address": address, "country": country, "city": city, "state": state, "gothram": gothram, "nakshatram": nakshatram, "rashi": rashi, "paadam": paadam, "communication_pref": communication_pref, "marital_status": maritalStatus, "referred_by": referredBy, "pincode": pincode, "whatsapp_number": whatsAppNumber, "pan_number": panNumber }, "donation": { "amount": 0, "is_80G_applicable": true, "event_name": "", "payment_type": "" }, occassions: finalOccasions, relations: finalRelationships }
 
     try {
       startLoader();

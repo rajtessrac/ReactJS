@@ -71,7 +71,6 @@ const RegularDonation = React.forwardRef(({ changeView, donationType, type, getD
       formDate.append('paadam', paadam);
       formDate.append('payment_type', donationType === 'online' ? '2' : '1');
       formDate.append('payment_mode', 'Online Transfer');
-      formDate.append('event_name', 'Regular Donation');
       formDate.append('payment_id', transactionNo);
       formDate.append('payment_datetime', formattedDateTime);
       formDate.append('comments', comments);
@@ -83,11 +82,6 @@ const RegularDonation = React.forwardRef(({ changeView, donationType, type, getD
       return formDate;
     }
   }));
-
-  React.useEffect(() => {
-    alert(transactionDate)
-  }, [transactionDate])
-
 
 
   const addRegularDonation = async () => {
@@ -120,10 +114,10 @@ const RegularDonation = React.forwardRef(({ changeView, donationType, type, getD
     try {
       const response = await donationService.addRegularDonationList(formDate, donationType);
       console.log('response', response);
-      if (response?.success === true || response?.razorpay_key) {
+      if(donationType=== 'online') {
         doRozarpay(response);
       } else {
-        alert('Error while paying donation');
+        changeView('donation-list')
       }
     } catch (error) {
       alert('Please try again or contact IT team')
@@ -142,8 +136,8 @@ const RegularDonation = React.forwardRef(({ changeView, donationType, type, getD
       name: payment.name,
       order_id: payment.order.id,
       handler: (response) => {
-        console.log(response);
-        alert("Payment Successful!");
+        changeView('donation-list')
+        
       },
 
       theme: {

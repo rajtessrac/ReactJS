@@ -32,8 +32,8 @@ const Main = () => {
                     element={ isAuthenticated()  ? <Home /> : <Navigate to="/login" /> }
                 />
                 <Route path="/login" element={ <Login /> } />
-                <Route path="/home" element={ isAuthenticated()  ? <Home /> : <Navigate to="/login" /> } />
-
+                {/* <Route path="/home" element={ isAuthenticated()  ? <Home /> : <Navigate to="/login" /> } /> */}
+                <Route path="/home" element={ <Home /> } />
             </Routes>
         </Router>:<FullScreenLoader size={8} />}
     
