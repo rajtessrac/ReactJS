@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Box, Button, TextField, Typography, FormControl, InputLabel } from '@mui/material';
 import categoryService from '../../services/categoryService';
 
-const AddCategory = ({ initialData }) => {
+const AddCategory = ({ initialData,changeView }) => {
   // If initialData is provided, it means we are in "edit" mode
   const [categoryName, setCategoryName] = useState(initialData?.categoryName || '');
   const [description, setDescription] = useState(initialData?.description || '');
@@ -35,7 +35,7 @@ const AddCategory = ({ initialData }) => {
     let response;
     response = await categoryService.addCategory(params);
     if (response.success === true) {
-      alert('Added')
+      changeView('category-list');
     }
     
   };

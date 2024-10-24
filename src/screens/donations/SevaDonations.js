@@ -5,6 +5,8 @@ import eventsService from '../../services/eventsService';
 import { useLoader } from '../../provider/LoaderProvider';
 import moment from 'moment';
 import donationService from '../../services/donationService';
+import { useRazorpay } from 'react-razorpay';
+
 
 
 const SevaDonations = ({type, donationType, changeView}) => {
@@ -13,6 +15,7 @@ const SevaDonations = ({type, donationType, changeView}) => {
   const donationRef = React.useRef(null);
   const [categoryList, setCategoryList] = React.useState([]);
   const { startLoader, stopLoader } = useLoader();
+  const { error, isLoading, Razorpay } = useRazorpay();
 
   const getCategories = async () => {
     const response = await eventsService.getCategories();

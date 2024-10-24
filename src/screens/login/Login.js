@@ -1,17 +1,20 @@
 import React, { useState } from 'react';
-import {  useGoogleLogin } from '@react-oauth/google';
+import { useGoogleLogin } from '@react-oauth/google';
 import './Login.css';
 import Logo from '../../assets/images/logo.png'
 import authServices from '../../services/authServices';
 import { useNavigate } from 'react-router-dom';
 import { useStoreActions } from 'easy-peasy';
 import { useLoader } from '../../provider/LoaderProvider';
+import { TextField } from '@mui/material';
+import { isEmailValid } from '../../helpers/validation';
 const Login = () => {
 
   const navigate = useNavigate();
   const { setUser } = useStoreActions((action) => action.auth);
   const [isVerifyOTP, setVerifyOTP] = useState(false);
-  const {startLoader, stopLoader} = useLoader();
+  const [emailError, setEmailError] = useState(false);
+  const { startLoader, stopLoader } = useLoader();
   const inputsRef = React.useRef([]);
   const [email, setEmail] = useState('');
   const [otp, setOtp] = useState('');
@@ -20,15 +23,22 @@ const Login = () => {
     console.log('doLogin')
 
     try {
-      startLoader();
-      const params = { email };
-      const response = await authServices.doLogin(params);
 
-      if (response.message === 'OTP has been sent to your email.') {
-        console.log('done success')
-        setVerifyOTP(true)
+      if (!isEmailValid(email)) {
+        setEmailError(true);
       }
-      console.log('response: ', response);
+      else {
+        startLoader();
+        const params = { email };
+        const response = await authServices.doLogin(params);
+
+        if (response.message === 'OTP has been sent to your email.') {
+          console.log('done success')
+          setVerifyOTP(true)
+        }
+
+      }
+
     } catch (e) {
       console.log(e);
     }
@@ -36,6 +46,14 @@ const Login = () => {
       stopLoader();
     }
   };
+
+  React.useEffect(() => {
+    if (emailError === true) {
+      setEmailError(false)
+    }
+
+  }, [email])
+
 
 
   const handleVerifyOTP = async (e) => {
@@ -56,9 +74,9 @@ const Login = () => {
         setUser(response.authenticatedUser);
         setVerifyOTP(true);
         //window.location.href = '/home'
-        navigate('/home',{replace: true})
+        navigate('/home', { replace: true })
 
-        
+
         // getUserProfile(user.id);
 
 
@@ -147,9 +165,11 @@ const Login = () => {
             className="logo"
           />
           <h2>Let’s Sign In</h2>
-          <input type="email" placeholder="Enter Email" className="input-field" onChange={ e => {
-            setEmail(e.target.value)
-          } } />
+          <TextField type="email" placeholder="Enter Email" className="input-field" required
+            error={ emailError }
+            helperText={ emailError ? "Please enter valid email" : "" } onChange={ e => {
+              setEmail(e.target.value)
+            } } />
           <button className="login-button" onClick={ doLogin } >Login</button>
           {/* <GoogleLogin
           className="google-signin-button"
@@ -164,7 +184,7 @@ const Login = () => {
         </div> : <div div className="login-container" >
 
           <h3>Let’s Verify OTP</h3>
-          <p className='sub-header'>{ `Enter the OTP you received to` }<br />{ `enrajesh67@gmail.com` }</p>
+          <p className='sub-header'>{ `Enter the OTP you received to` }<br />{ `${email}` }</p>
           <div className="otp-inputs">
             { [...Array(4)].map((_, index) => (
               <input
@@ -191,7 +211,7 @@ const Login = () => {
 
 
       </div>
-      
+
     </div>
 
   );

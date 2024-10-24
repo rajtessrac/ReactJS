@@ -12,7 +12,7 @@ function App() {
   const doLogin = async () => {
     console.log('doLogin')
     try {
-      const params = {email: 'enrajesh67@gmail.com'};
+      const params = {email: ''};
       const response = await authServices.doLogin(params);
       if (response.message === 'OTP has been sent to your email.') {
         alert(['success'])
