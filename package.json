@@ -68,6 +68,8 @@
   },
   "devDependencies": {
     "ajv": "^7.2.4",
-    "gh-pages": "^6.1.1"
+    "gh-pages": "^6.1.1",
+    "reactotron-react-js": "^3.3.15",
+    "reactotron-redux": "^3.1.10"
   }
 }

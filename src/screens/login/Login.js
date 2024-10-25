@@ -71,6 +71,7 @@ const Login = () => {
         e.preventDefault();
 
         localStorage.setItem('token', response.authenticatedUser.access);
+        localStorage.setItem('user', JSON.stringify(response.authenticatedUser));
         setUser(response.authenticatedUser);
         setVerifyOTP(true);
         //window.location.href = '/home'
@@ -165,7 +166,7 @@ const Login = () => {
             className="logo"
           />
           <h2>Let’s Sign In</h2>
-          <TextField type="email" placeholder="Enter Email" className="input-field" required
+          <TextField size="small" type="email" placeholder="Enter Email" className="input-field" required
             error={ emailError }
             helperText={ emailError ? "Please enter valid email" : "" } onChange={ e => {
               setEmail(e.target.value)

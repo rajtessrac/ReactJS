@@ -6,6 +6,7 @@ import Dashboard from '../dashboard/Dashboard';
 import ProfileDropdown from './ProfileDropdown';
 import Footer from '../footer/Footer';
 import ProfilePage from '../profile/ProfilePage';
+import { Suspense, lazy } from "react";
 import Sevas from '../sevas/Sevas';
 import Categories from '../categories/Categories';
 import Donations from '../donations/Donations';
@@ -16,9 +17,10 @@ import { useStoreState } from 'easy-peasy';
 function Home() {
   const [selectedSection, setSelectedSection] = useState('dashboard');
   const [open, setOpen] = useState(true);
-  const {user} = useStoreState((state) => state.auth);
+  const { user } = useStoreState((state) => state.auth);
 
   const renderContent = () => {
+    
     switch (selectedSection) {
       case 'dashboard':
         return <Dashboard />;
@@ -31,7 +33,7 @@ function Home() {
       case 'categories':
         return <Categories />
       case 'profile':
-        return <ProfilePage userId={user.id} />;
+        return <ProfilePage userId={ user.id } />;
       case 'report':
         return <div>Coming soon</div>;
       case 'bulk-upload':
@@ -42,17 +44,24 @@ function Home() {
     }
   };
 
+  
+
   return (
     <div className="App">
-      <SideMenu  setIsOpen={(value)=>{
+      <SideMenu setIsOpen={ (value) => {
         setOpen(value);
-      }} onSectionSelect={ setSelectedSection } />
-      <div className="content"  style={{marginLeft: open ? '14%' : '3%' }} >
+      } } onSectionSelect={ setSelectedSection } />
+      <div className="content" style={ { marginLeft: open ? '14%' : '3%' } } >
         <div class="full-width-div">
           {/* <i className="fas fa-user right-button"></i> */ }
           <ProfileDropdown onSectionSelect={ setSelectedSection } />
         </div>
-        { renderContent() }
+        <Suspense
+          fallback={ <div>Component1 are loading please wait...</div> }
+        >
+          { renderContent() }
+        </Suspense>
+
       </div>
       <Footer />
     </div>

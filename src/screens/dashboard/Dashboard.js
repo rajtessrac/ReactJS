@@ -1,5 +1,5 @@
 import React, { memo, useState } from 'react'
-import './Dashboard.css';
+import styles from './Dashboard.module.css';
 import DonationChart from './DonationChart';
 import DonutChart from './DonutChart';
 import dashboardService from '../../services/dashboardService';
@@ -11,6 +11,7 @@ import TopTenDonors from './TopTenDonors';
 import UpcomingSevas from './UpcomingSevas';
 import JeevanadiList from './JeevanadiList';
 import { chartsColors } from '../../constants';
+import useClearBackEvent from '../../hooks/useClearBackEvent';
 
 const Dashboard = memo(() => {
   const [activeTab, setActiveTab] = useState('Week');
@@ -26,6 +27,8 @@ const Dashboard = memo(() => {
   const [recurringDonationList, setRecurringDonationList] = useState([]);
   const [jeevanadiNumbers, setJeevanadiNumbers] = useState();
   const [recurringPercentage, setRecurringPercentage] = useState(0);
+
+  useClearBackEvent('/');
 
 
   useDidMountEffect(() => {
@@ -106,10 +109,10 @@ const Dashboard = memo(() => {
 
 
   return (
-    <div className="dashboard-container">
+    <div className={styles.dashboardContainer}>
       <div style={ { display: 'flex', justifyContent: 'space-between', marginBottom: 30 } } >
         <h1>Welcome to Dashboard</h1>
-        <div className="tabs">
+        <div className={styles.tabs}>
           <button
             className={ activeTab === 'Week' ? 'active' : '' }
             onClick={ () => setActiveTab('Week') }
@@ -130,8 +133,8 @@ const Dashboard = memo(() => {
           </button>
         </div>
       </div>
-      <div className="card-container">
-        <div className="card">
+      <div className={styles.cardContainer}>
+        <div className={styles.card}>
           <h4>{ user.role === 'Donor' ? 'MY DONATIONS (INR)' : 'TOTAL DONATIONS RECEIVED' }</h4>
           <p> { `${Intl.NumberFormat('en-US', {
             style: 'currency',
@@ -139,34 +142,34 @@ const Dashboard = memo(() => {
             minimumFractionDigits: 2,
           }).format(totalDonationData?.total_donation)}` }</p>
         </div>
-        <div className="card">
+        <div className={styles.card}>
           <h4>TOTAL RECURRING DONORS</h4>
           <p>1</p>
         </div>
-        <div className="card">
+        <div className={styles.card}>
           <h4>CURRENT RUNNING JEEVANADI NUMBER</h4>
           <p>{ jeevanadiNumbers?.current_jno || '' }</p>
         </div>
         { jeevanadiNumbers?.total_jmembers ?
-          <div className="card">
+          <div className={styles.card}>
             <h4>NEW JEEVANADI MEMBERS</h4>
             <p>{ jeevanadiNumbers?.total_jmembers }</p>
-          </div> : <div className='card' style={{width: '88%'}} /> }
+          </div> : <div className={styles.card} style={{width: '88%'}} /> }
 
       </div>
-      <div className="card-container1">
-        { totalDonationByDateList && totalDonationByDateList.length > 0 ? <DonationChart totalDonationByDateList={ totalDonationByDateList } /> : <div className='card' style={{width: '33.33%'}} /> }
+      <div className={styles.cardContainer1}>
+        { totalDonationByDateList && totalDonationByDateList.length > 0 ? <DonationChart totalDonationByDateList={ totalDonationByDateList } /> : <div className={styles.card} style={{width: '33.33%'}} /> }
 
         { totalDonationByEventsList && totalDonationByEventsList.length > 0 && totalEventAmount > 0 ?
-          <DonutChart totalEventAmount={ totalEventAmount } eventList={ totalDonationByEventsList } /> : <div className='card' style={{width: '33.33%'}} /> }
+          <DonutChart totalEventAmount={ totalEventAmount } eventList={ totalDonationByEventsList } /> : <div className={styles.card} style={{width: '33.33%'}} /> }
 
-        { jeevanadiNumbers && jeevanadiNumbers?.jmembers ? <JeevanadiList data={ jeevanadiNumbers.jmembers.slice(0, 5) } /> : <div className='card' style={{width: '33.33%'}} /> }
+        { jeevanadiNumbers && jeevanadiNumbers?.jmembers ? <JeevanadiList data={ jeevanadiNumbers.jmembers.slice(0, 5) } /> : <div className={styles.card} style={{width: '33.33%'}} /> }
 
       </div>
-      <div className="card-container2">
-        { topTenDonorsList && topTenDonorsList.length > 0 ? <TopTenDonors topTenDonorsList={ topTenDonorsList } /> : <div className='card' style={{width: '33.33%'}} /> }
-        { upcomingEventsList && upcomingEventsList.length > 0 ? <UpcomingSevas data={ upcomingEventsList.slice(0, 5) } /> : <div className='card' style={{width: '33.33%'}} /> }
-        { birthdayAndAnniversaryList && birthdayAndAnniversaryList.length > 0 ? <BirthdayList data={ birthdayAndAnniversaryList.slice(0, 5) } /> : <div className='card' style={{width: '33.33%'}} /> }
+      <div className={styles.cardContainer2}>
+        { topTenDonorsList && topTenDonorsList.length > 0 ? <TopTenDonors topTenDonorsList={ topTenDonorsList } /> : <div className={styles.card} style={{width: '33.33%'}} /> }
+        { upcomingEventsList && upcomingEventsList.length > 0 ? <UpcomingSevas data={ upcomingEventsList.slice(0, 5) } /> : <div className={styles.card} style={{width: '33.33%'}} /> }
+        { birthdayAndAnniversaryList && birthdayAndAnniversaryList.length > 0 ? <BirthdayList data={ birthdayAndAnniversaryList.slice(0, 5) } /> : <div className={styles.card} style={{width: '33.33%'}} /> }
       </div>
 
     </div>

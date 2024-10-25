@@ -1,4 +1,4 @@
-.dashboard-container {
+.dashboardContainer {
     width: 96%;
     margin: 0 auto;
     padding: 20px;
@@ -10,13 +10,13 @@
   }
 
   
-  .card-container {
+  .cardContainer {
     display: grid;
     grid-template-columns: repeat(4, 1fr); /* Four equal-width columns */
     gap: 20px;
   }
 
-  .card-container1 {
+  .cardContainer1 {
     display: flex;
     justify-content: space-between; /* Ensures equal spacing between blocks */
     align-items: stretch;
@@ -24,7 +24,7 @@
     gap: 20px;
   }
   
-  .card-container2 {
+  .cardContainer2 {
     display: flex;
     justify-content: space-between; /* Ensures equal spacing between blocks */
     align-items: stretch;

@@ -42,7 +42,7 @@ const ProfileDropdown = ({onSectionSelect}) => {
               </div>
               <div className="user-info">
                 <h4>{user.email}</h4>
-                <p>{user.profile.full_name}</p>
+                {/* <p>{user.full_name}</p> */}
               </div>
             </div>
             <div className="dropdown-item" onClick={handleProfileClick}>
