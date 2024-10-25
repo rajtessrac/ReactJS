@@ -20,7 +20,7 @@ function Home() {
   const { user } = useStoreState((state) => state.auth);
 
   const renderContent = () => {
-    
+
     switch (selectedSection) {
       case 'dashboard':
         return <Dashboard />;
@@ -44,14 +44,14 @@ function Home() {
     }
   };
 
-  
+
 
   return (
     <div className="App">
       <SideMenu setIsOpen={ (value) => {
         setOpen(value);
       } } onSectionSelect={ setSelectedSection } />
-      <div className="content" style={ { marginLeft: open ? '14%' : '3%' } } >
+      <div className="content"  >
         <div class="full-width-div">
           {/* <i className="fas fa-user right-button"></i> */ }
           <ProfileDropdown onSectionSelect={ setSelectedSection } />
@@ -59,7 +59,9 @@ function Home() {
         <Suspense
           fallback={ <div>Component1 are loading please wait...</div> }
         >
-          { renderContent() }
+          <div style={ { marginLeft: open ? '19%' : '6%', marginTop: '1%' } }>
+            { renderContent() }
+          </div>
         </Suspense>
 
       </div>
